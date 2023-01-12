@@ -1,4 +1,4 @@
-import styles from './FromAuth.module.scss';
+import * as styles from './FromAuth.module.scss';
 
 const template = `
   <div class="${styles.Root}">

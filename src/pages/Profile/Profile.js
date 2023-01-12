@@ -1,4 +1,4 @@
-import styles from './Profile.module.scss';
+import * as styles from './Profile.module.scss';
 
 import Button from '../../components/core/Button';
 import cn from 'classnames';

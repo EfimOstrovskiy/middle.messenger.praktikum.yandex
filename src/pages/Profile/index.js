@@ -1,4 +1,4 @@
-import styles from './Profile.module.scss';
+import * as styles from './Profile.module.scss';
 
 import { LiteComponent } from '../../utils';
 import template from './Profile';

@@ -1,4 +1,4 @@
-import styles from './Login.module.scss';
+import * as styles from './Login.module.scss';
 
 import { LiteComponent } from '../../utils';
 import template from './Login';

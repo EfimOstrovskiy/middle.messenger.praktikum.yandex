@@ -1,4 +1,4 @@
-import styles from './Main.module.scss';
+import * as styles from './Main.module.scss';
 
 import ARROW_ICON from '../../../public/images/icons/arrow.svg';
 

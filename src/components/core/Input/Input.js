@@ -1,4 +1,4 @@
-import styles from './Input.module.scss';
+import * as styles from './Input.module.scss';
 
 import cn from 'classnames';
 

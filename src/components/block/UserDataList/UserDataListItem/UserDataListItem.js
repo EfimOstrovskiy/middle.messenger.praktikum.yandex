@@ -1,4 +1,4 @@
-import styles from './UserDataListItem.module.scss';
+import * as styles from './UserDataListItem.module.scss';
 
 const template = `
   <li class="${styles.Root}">

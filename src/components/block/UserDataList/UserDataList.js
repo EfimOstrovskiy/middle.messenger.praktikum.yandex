@@ -1,4 +1,4 @@
-import styles from './UserDataList.module.scss';
+import * as styles from './UserDataList.module.scss';
 
 import cn from 'classnames';
 

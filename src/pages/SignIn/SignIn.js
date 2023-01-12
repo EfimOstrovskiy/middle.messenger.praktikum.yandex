@@ -1,4 +1,4 @@
-import styles from './SignIn.module.scss';
+import * as styles from './SignIn.module.scss';
 
 const template = `
   <div class="${styles.Root}">

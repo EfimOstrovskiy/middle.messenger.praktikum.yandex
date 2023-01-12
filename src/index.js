@@ -1,4 +1,4 @@
-import '../public/main.css';
+import '../public/styles/main.css';
 
 import { LiteComponent } from './utils';
 import Profile from './pages/Profile';

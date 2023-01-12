@@ -1,4 +1,4 @@
-import styles from './Button.module.scss';
+import * as styles from './Button.module.scss';
 
 import cn from 'classnames';
 

@@ -1,4 +1,4 @@
-import styles from './NotFound.module.scss';
+import * as styles from './NotFound.module.scss';
 
 import Error from '../../components/block/Error';
 

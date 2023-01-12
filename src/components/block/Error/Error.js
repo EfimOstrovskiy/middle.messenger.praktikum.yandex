@@ -1,4 +1,4 @@
-import styles from './Error.module.scss';
+import * as styles from './Error.module.scss';
 
 import Button from '../../core/Button';
 

@@ -1,4 +1,4 @@
-import styles from './ServerError.module.scss';
+import * as styles from './ServerError.module.scss';
 
 import Error from '../../components/block/Error';
 
