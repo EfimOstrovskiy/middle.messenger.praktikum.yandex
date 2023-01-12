@@ -8,8 +8,15 @@
     "start": "parcel build public/index.html && node server/server.js"
   },
   "keywords": [],
+  "targets": {
+    "default": {
+      "engines": {
+        "browsers": ">= 50%"
+      }
+    }
+  },
   "engines": {
-    "node": ">=12.0"
+    "node": ">= 14.0"
   },
   "author": "",
   "license": "ISC",
