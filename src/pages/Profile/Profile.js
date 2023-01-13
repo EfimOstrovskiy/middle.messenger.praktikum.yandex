@@ -8,12 +8,12 @@ import PROFILE_ICON from '../../../public/images/icons/profile.svg'
 const template = `
   <div class="${styles.Root}">
     <nav class="${styles.Menu}">
-      ${Button(styles.Cancel, `<img src="${BACK_ICON}" alt="" />`)}
+      ${Button(styles.Cancel, `<img src="${BACK_ICON}" alt="Назад к чатам" />`)}
     </nav>
     <div class="${styles.Profile}">
       <div class="${styles.User}">
         <div class="${styles.Photo}">
-          <img src="${PROFILE_ICON}" alt="" />
+          <img src="${PROFILE_ICON}" alt="Фото профиля" />
         </div>
         <h4 class="${styles.Name}">{#name#}</h4>
         {#userData#}

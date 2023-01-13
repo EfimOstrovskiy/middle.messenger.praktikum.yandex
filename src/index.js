@@ -5,6 +5,7 @@ import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
+import ServerError from './pages/ServerError';
 import Main from './pages/Main';
 
 const path = window.location.pathname;
@@ -24,6 +25,9 @@ switch (path) {
     break;
   case "/profile":
     page = Profile();
+    break;
+  case "/server_error":
+    page = ServerError();
     break;
   default:
     page = NotFound();
