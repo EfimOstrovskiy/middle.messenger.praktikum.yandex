@@ -1,0 +1,1 @@
+export { LiteComponent } from './LiteComponent';
