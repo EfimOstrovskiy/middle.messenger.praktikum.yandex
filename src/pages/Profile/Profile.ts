@@ -1,14 +1,11 @@
 import * as styles from './Profile.module.scss';
 
-import Button from '../../components/core/Button';
-import cn from 'classnames';
-import BACK_ICON from '../../../public/images/icons/back.svg';
 import PROFILE_ICON from '../../../public/images/icons/profile.svg'
 
 const template = `
   <div class="${styles.Root}">
     <nav class="${styles.Menu}">
-      ${Button(styles.Cancel, `<img src="${BACK_ICON}" alt="Назад к чатам" />`)}
+      {#backProfile#}
     </nav>
     <div class="${styles.Profile}">
       <div class="${styles.User}">
@@ -19,13 +16,13 @@ const template = `
         {#userData#}
         <ul class="${styles.ControlList}">
           <li class="${styles.ControlItem}">
-            ${Button(styles.Button, 'Изменить данные', 'transparent')}
+            {#changeData#}
           </li>
           <li class="${styles.ControlItem}">
-            ${Button(styles.Button, 'Изменить пароль', 'transparent')}
+            {#changePassword#}
           </li>
           <li class="${styles.ControlItem}">
-            ${Button(cn(styles.Exit, styles.Button), 'Выйти', 'transparent')}
+            {#exit#}
           </li>
         </ul>
       </div>

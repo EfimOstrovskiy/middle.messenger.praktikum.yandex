@@ -6,7 +6,7 @@ import SignIn from './pages/SignIn';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import ServerError from './pages/ServerError';
-import Main from './pages/Main';
+import Mains from './pages/Main';
 
 const path = window.location.pathname;
 const liteComponent = new LiteComponent();
@@ -15,22 +15,22 @@ let page;
 
 switch (path) {
   case "/":
-    page = Main();
+    page = new Mains({ chatsList: 'testing log' });
     break;
   case "/login":
-    page = Login();
+    page = new Login();
     break;
   case "/sign_in":
-    page = SignIn();
+    page = new SignIn();
     break;
   case "/profile":
-    page = Profile();
+    page = new Profile();
     break;
   case "/server_error":
-    page = ServerError();
+    page = new ServerError();
     break;
   default:
-    page = NotFound();
+    page = new NotFound();
 }
 
-liteComponent.renderComponent('root', page);
+liteComponent.renderComponent('root', page.getContent());

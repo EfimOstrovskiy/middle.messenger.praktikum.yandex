@@ -6,6 +6,7 @@ const template = `
   <div class="${cn(styles.Root, '{#className#}')}">
     <label class="${styles.Label}">{#placeholder#}</label>
     <input type="{#type#}" class="${styles.Input}" name="{#name#}" />
+    <span class="${styles.Error}"></span>
   </div>
 `;
 
