@@ -17,8 +17,19 @@ textarea {
 
 html,
 body {
-  font-family: 'Inter', sans-serif;
-  color: #1e1e1e
+  --color-white: #fff;
+  --color-blue-1: #3369f3;
+  --color-grey-1: #efefef;
+  --color-grey-2: #e5e5e5;
+  --color-grey-3: #eaeaea;
+  --color-grey-4: #fbfbfb;
+  --color-grey-5: #999;
+  --color-grey-6: #1e1e1e;
+  --color-red-1: #ff2f2f;
+  --color-red-2: #ff0000;
+
+  font-family: "Inter", sans-serif;
+  color: var(--color-grey-6);
 }
 
 h1 {

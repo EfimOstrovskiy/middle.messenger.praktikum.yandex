@@ -12,7 +12,7 @@ export const SIGN_IN_MESSAGE_ERROR: Record<string, string> = {
   login: 'Логин должен содержать от 3 до 20 символов',
   email: 'Введенная почта недопустима. Проверьте введенные данные',
   password: 'Пароль должен содержать спецсимволы, иметь одну заглавную букву и цифру. Длина от 8 до 40',
-  phone: 'Введенная почта недопустима. Проверьте введенные данные',
+  phone: 'Введенный номер недопустим. Проверьте введенные данные',
 };
 
 export const LOGIN_MESSAGE_ERROR: Record<string, string> = {
@@ -21,5 +21,9 @@ export const LOGIN_MESSAGE_ERROR: Record<string, string> = {
 };
 
 export const BASE_MESSAGE_ERROR: Record<string, string> = {
-  message: 'Поле не можеть быть пустым'
+  name: 'Введенное имя недопустимо',
+  login: 'Введенный лоин недопустим',
+  email: 'Введенная почта недопустима',
+  display_name: 'Введенный никнейм недопустим',
+  phone: 'Введенный номер недопустим',
 };

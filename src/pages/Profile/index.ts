@@ -35,23 +35,22 @@ class Profile extends Component<IProfileProps> {
     const changeData = new Button({
       className: styles.Button,
       value: 'Изменить данные',
-      theme: 'transparent'
+      theme: 'transparent',
+      events: {
+        click: (event) => {
+          const target = event.target as HTMLElement;
+          const form =target.closest('form');
+          if (form) {
+            form.querySelectorAll('input')
+              .forEach(input => input.removeAttribute('readonly'));
+          }
+        }
+      }
     });
     const changePassword = new Button({
       className: styles.Button,
       value: 'Изменить пароль',
       theme: 'transparent',
-      events: {
-        click: () => {
-          userData.setProps({
-            itemsInit: [
-              { title: 'Старый пароль', type: 'old_password', name: 'password', value: '' },
-              { title: 'Новый пароль', type: 'new_password', name: 'password', value: '' },
-              { title: 'Повторите новый пароль', type: 'password', name: 'repeat_new_password', value: '' },
-            ]
-          });
-        }
-      }
     });
     const exit = new Button({
       className: cn(styles.Exit, styles.Button),
@@ -76,7 +75,14 @@ class Profile extends Component<IProfileProps> {
   render() {
     const { backProfile, userData, changeData, changePassword, exit } = this.props;
 
-    return this.compile(this.templateNode, { backProfile, name: 'Efim', userData, changeData, changePassword, exit });
+    return this.compile(this.templateNode, {
+      backProfile,
+      name: 'Ефим Островский',
+      userData,
+      changeData,
+      changePassword,
+      exit
+    });
   }
 }
 

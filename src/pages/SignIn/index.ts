@@ -37,12 +37,12 @@ class SingIn extends Component<ISingInProps> {
           focusin: (event) => {
             const target = event.target as HTMLInputElement;
 
-            handleFocus(target, 'signIn')
+            handleFocus(target, 'signIn');
           },
           focusout: (event) => {
             const target = event.target as HTMLInputElement;
 
-            handleBlur(target, 'signIn')
+            handleBlur(target, 'signIn');
           }
         }
       });

@@ -9,11 +9,11 @@
 }
 
 .Primary {
-  background: #3369f3;
-  color: #fff;
+  background: var(--color-blue-1);
+  color: var(--color-white);
 }
 
 .Transparent {
   background: transparent;
-  color: #3369f3;
+  color: var(--color-blue-1);
 }

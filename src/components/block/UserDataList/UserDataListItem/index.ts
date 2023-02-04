@@ -5,7 +5,8 @@ interface IUserDataListItem {
   title: string;
   type: string;
   name: string;
-  value: string | number
+  value: string | number;
+  events?: Record<string, (event: Event) => void>;
 }
 
 class UserDataListItem extends Component<IUserDataListItem> {
@@ -18,6 +19,7 @@ class UserDataListItem extends Component<IUserDataListItem> {
   }
 
   render() {
+    console.log('list-item')
     const { title, type, name, value } = this.props;
 
     return this.compile(this.templateNode, { title, type, name, value });
