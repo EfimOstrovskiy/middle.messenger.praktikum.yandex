@@ -36,12 +36,16 @@ export const Validation = (field: HTMLInputElement, mode: ValidationModeType) =>
 
 export const ValidationResultView = (field: HTMLInputElement, result: { success: boolean, messageError: string }) => {
   const parentNode = field.parentElement;
+  const formNode = field.closest('form');
   const messageNode = parentNode && parentNode.querySelector('span');
-  if (messageNode) {
+  if (messageNode && formNode) {
     if (!result.success) {
       messageNode.textContent = result.messageError;
+      formNode.classList.add('validation-error')
     } else {
       messageNode.textContent = '';
+      formNode.classList.remove('validation-error')
+      formNode.classList.add('validation-success')
     }
   }
 };

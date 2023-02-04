@@ -5,11 +5,7 @@ import template from './SignIn';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { Validation,
-  ValidationModeType,
-  ValidationResultView,
-  SerializeForm
-} from '../../utils/helpers';
+import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
 
 interface ISingInProps {
   auth?: FormAuth
@@ -41,12 +37,12 @@ class SingIn extends Component<ISingInProps> {
           focusin: (event) => {
             const target = event.target as HTMLInputElement;
 
-            this.handleFocus(target, 'signIn')
+            handleFocus(target, 'signIn')
           },
           focusout: (event) => {
             const target = event.target as HTMLInputElement;
 
-            this.handleBlur(target, 'signIn')
+            handleBlur(target, 'signIn')
           }
         }
       });
@@ -62,9 +58,9 @@ class SingIn extends Component<ISingInProps> {
           events: {
             click: (event) => {
               event.preventDefault();
-              const target = event.target as HTMLInputElement;
+              const target = event.target as HTMLElement;
 
-              this.handleSumbit(target);
+              handleSubmit(target, 'signIn');
             }
           }
         });
@@ -75,24 +71,6 @@ class SingIn extends Component<ISingInProps> {
     const auth = new FormAuth({ title: 'Регистрация', fields, buttons });
 
     super({ auth, ...props });
-  }
-
-  private handleFocus(field: HTMLInputElement, mode: ValidationModeType) {
-    const result = Validation(field, mode);
-    ValidationResultView(field, result)
-  }
-
-  private handleBlur(field: HTMLInputElement, mode: ValidationModeType) {
-    const result = Validation(field, mode);
-    ValidationResultView(field, result)
-  }
-
-  private handleSumbit(field: HTMLInputElement) {
-    const form = field.closest('form');
-    const fieldsName = fieldsInit.map(field => field.name)
-    if (form) {
-      console.log(SerializeForm(form, fieldsName))
-    }
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

@@ -1,6 +1,6 @@
 import '../public/styles/main.css';
 
-import { LiteComponent } from './utils';
+import { renderComponent } from './utils';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import Login from './pages/Login';
@@ -9,13 +9,12 @@ import ServerError from './pages/ServerError';
 import Mains from './pages/Main';
 
 const path = window.location.pathname;
-const liteComponent = new LiteComponent();
 
 let page;
 
 switch (path) {
   case "/":
-    page = new Mains({ chatsList: 'testing log' });
+    page = new Mains();
     break;
   case "/login":
     page = new Login();
@@ -33,4 +32,4 @@ switch (path) {
     page = new NotFound();
 }
 
-liteComponent.renderComponent('root', page.getContent());
+renderComponent('root', page.getContent());

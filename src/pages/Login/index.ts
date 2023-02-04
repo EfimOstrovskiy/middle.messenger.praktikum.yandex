@@ -5,10 +5,7 @@ import template from './Login';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { Validation,
-  ValidationModeType,
-  ValidationResultView
-} from '../../utils/helpers';
+import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
 
 interface ILoginProps {
   auth?: FormAuth
@@ -35,11 +32,11 @@ class Login extends Component<ILoginProps> {
         events: {
           focusin: (event) => {
             const input = event.target as HTMLInputElement
-            this.handleFocus(input, 'login')
+            handleFocus(input, 'login')
           },
           focusout: (event) => {
             const input = event.target as HTMLInputElement
-            this.handleBlur(input, 'login')
+            handleBlur(input, 'login')
           }
         }
       });
@@ -47,21 +44,27 @@ class Login extends Component<ILoginProps> {
     const buttons = buttonsInit.map((button) => {
       const { className, value, theme } = button;
 
+      if (value === 'Авторизоваться') {
+        return new Button({
+          className,
+          value,
+          theme,
+          events: {
+            click: (event) => {
+              event.preventDefault();
+              const target = event.target as HTMLElement;
+
+              handleSubmit(target, 'signIn');
+            }
+          }
+        });
+      }
+
       return new Button({ className, value, theme });
     });
     const auth = new FormAuth({ title: 'Вход', fields, buttons });
 
     super({ auth, ...props });
-  }
-
-  private handleFocus(field: HTMLInputElement, mode: ValidationModeType) {
-    const result = Validation(field, mode);
-    ValidationResultView(field, result)
-  }
-
-  private handleBlur(field: HTMLInputElement, mode: ValidationModeType) {
-    const result = Validation(field, mode);
-    ValidationResultView(field, result)
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

@@ -20,7 +20,9 @@ export class Component<Props extends Record<string, any> = {}> {
 
     const { props, children } = this._getChildren(propsAndChildren)
 
-    this.children = children;
+    const _children = children as Props;
+
+    this.children = this._makePropsProxy(_children);
     this.props = this._makePropsProxy(props);
 
     this.eventBus = () => eventBus;
@@ -58,17 +60,18 @@ export class Component<Props extends Record<string, any> = {}> {
 
   private _componentDidUpdate(oldProps: Props, newProps: Props) {
     const response = this.componentDidUpdate(oldProps, newProps);
+
     if (!response) {
       return;
     }
+
     this._removeEvents();
     this.eventBus().emit(Component.EVENTS.FLOW_RENDER);
   }
 
   componentDidUpdate(oldProps: Props, newProps: Props) {
-    if (oldProps === newProps) {
-      return true;
-    }
+    console.log(oldProps, newProps);
+    return true;
   }
 
   setProps = (nextProps: Partial<Props>) => {
@@ -76,7 +79,15 @@ export class Component<Props extends Record<string, any> = {}> {
       return;
     }
 
-    Object.assign(this.props, nextProps);
+    const { props, children } = this._getChildren(nextProps);
+
+    if (Object.values(children).length) {
+      Object.assign(this.props, children);
+    }
+
+    if (Object.values(props).length) {
+      Object.assign(this.props, props);
+    }
   };
 
   get element() {

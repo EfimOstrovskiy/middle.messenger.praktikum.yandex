@@ -2,7 +2,7 @@ interface ILiteComponent {
   searchProps(arg: string): null | string[];
   isEqualProps(props: string[], args: string[]): boolean
   compileComponent(template: string): (args: null | Record<string, string | string[]>) => string;
-  renderComponent(root: string, node: string): void
+  renderComponent(root: string, node: DocumentFragment): void
 }
 
 type ArgsType = null | Record<string, string | string[]>;
@@ -41,19 +41,12 @@ class LiteComponent implements ILiteComponent {
   }
 
   compileComponent(template: string): (args: ArgsType) => string {
-    // const props = this.searchProps(template);
-    // const objProps = props && props.reduce((arr, prop) => ({ ...arr, [prop]: null}), {});
-
     return (args = null) => {
       let result = template;
 
       if (args === null) {
         return result;
       }
-
-      // if (objProps && !this.isEqualProps(Object.keys(objProps), Object.keys(args))) {
-      //   throw new Error('Используются недопустимые параметры!')
-      // }
 
       for (let item of Object.keys(args)) {
         const value = args[item]
@@ -72,15 +65,16 @@ class LiteComponent implements ILiteComponent {
     }
   }
 
-  renderComponent(rootElement: string, node: any) {
+  renderComponent(rootElement: string, node: DocumentFragment) {
     const root = document.getElementById(rootElement);
     root && root.append(node);
   }
 }
 
-const compileComponent = (template: string, args: ArgsType) => new LiteComponent().compileComponent(template)(args)
+const compileComponent = (template: string, args: ArgsType) => new LiteComponent().compileComponent(template)(args);
+const renderComponent = (rootElement: string, node: DocumentFragment) => new LiteComponent().renderComponent(rootElement, node);
 
 export {
   compileComponent,
-  LiteComponent
+  renderComponent
 };

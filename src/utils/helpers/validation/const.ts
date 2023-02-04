@@ -4,7 +4,7 @@ export const REGEXP_SETTING: Record<string, RegExp> = {
   email: /^\w+@\w+\.\w+$/,
   password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
   phone: /^((\+7|7|8)+([0-9]){10,15})$/,
-  // message: ''
+  message: /(.|\s)*\S(.|\s)*/
 };
 
 export const SIGN_IN_MESSAGE_ERROR: Record<string, string> = {

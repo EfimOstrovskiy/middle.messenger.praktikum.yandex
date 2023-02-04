@@ -35,6 +35,11 @@
   width: 510px;
 }
 
+.Form {
+  display: flex;
+  flex-direction: column;
+}
+
 .Data {
   margin-bottom: 40px;
 }

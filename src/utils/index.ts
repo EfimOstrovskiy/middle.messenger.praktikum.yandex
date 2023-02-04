@@ -1,2 +1,2 @@
-export { LiteComponent, compileComponent } from './LiteComponent';
+export { renderComponent, compileComponent } from './LiteComponent';
 export { Component } from './Component';

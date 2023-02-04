@@ -13,18 +13,20 @@ const template = `
           <img src="${PROFILE_ICON}" alt="Фото профиля" />
         </div>
         <h4 class="${styles.Name}">{#name#}</h4>
-        {#userData#}
-        <ul class="${styles.ControlList}">
-          <li class="${styles.ControlItem}">
-            {#changeData#}
-          </li>
-          <li class="${styles.ControlItem}">
-            {#changePassword#}
-          </li>
-          <li class="${styles.ControlItem}">
-            {#exit#}
-          </li>
-        </ul>
+        <form class="${styles.Form}">
+          {#userData#}
+          <ul class="${styles.ControlList}">
+            <li class="${styles.ControlItem}">
+              {#changeData#}
+            </li>
+            <li class="${styles.ControlItem}">
+              {#changePassword#}
+            </li>
+            <li class="${styles.ControlItem}">
+              {#exit#}
+            </li>
+          </ul>
+        </form>
       </div>
     </div>
   </div>
