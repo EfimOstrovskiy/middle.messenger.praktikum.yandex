@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   background: #FBFBFB;
-  border-right: 1px solid #EAEAEA;
+  border-right: 1px solid #eaeaea;
 }
 
 .Cancel {
@@ -52,7 +52,7 @@
   justify-content: center;
   height: 130px;
   width: 130px;
-  background: #EFEFEF;
+  background: #efefef;
   border-radius: 50%;
 }
 
@@ -69,7 +69,7 @@
 
 .ControlItem {
   padding: 10px 0;
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid #eaeaea;
   list-style: none;
 
   &:last-child {
@@ -82,5 +82,5 @@
 }
 
 .Exit {
-  color: #FF0000;
+  color: #ff0000;
 }
