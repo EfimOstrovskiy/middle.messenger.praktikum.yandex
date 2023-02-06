@@ -6,11 +6,18 @@
 .Label {
   font-size: 13px;
   line-height: 13px;
-  color: #999999;
+  color: var(--color-grey-5);
 }
 
 .Input {
   padding: 7px 0;
   border: none;
-  border-bottom: 1px solid #3369F3;
+  border-bottom: 1px solid var(--color-blue-1);
+}
+
+.Error {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--color-red-1);
 }
