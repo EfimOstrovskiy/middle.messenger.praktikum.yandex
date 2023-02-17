@@ -11,6 +11,7 @@ import BACK_ICON from '../../../public/images/icons/back.svg';
 
 
 interface IMain {
+  attr?: Record<string, any>;
   chatsList?: ChatList[];
   selectMedia?: Button;
   sendMessage?: Button
@@ -46,10 +47,15 @@ class Mains extends Component<IMain> {
       }
     });
 
-    super({ chatsList,
+    super('div',{
+      attr: {
+        class: styles.Root
+      },
+      chatsList,
       selectMedia,
       sendMessage,
-      ...props});
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

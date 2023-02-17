@@ -9,7 +9,7 @@ interface INotFoundProps {
 class NotFound extends Component<INotFoundProps> {
   constructor(props: INotFoundProps = {}) {
     const error = new Error({ codeError: '404', textError: 'Не туда попали'});
-    super({ error, ...props });
+    super('div',{ error, ...props });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

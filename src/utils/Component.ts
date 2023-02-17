@@ -13,15 +13,17 @@ export class Component<Props extends Record<string, any> = {}> {
   eventBus: () => EventBus;
   props: Props;
   children: Record<string, any>
-  _element: DocumentFragment;
+  tagName: string
+  _element: any;
 
-  constructor(propsAndChildren: Props) {
+  constructor(tag: string = 'div', propsAndChildren: Props) {
     const eventBus = new EventBus();
 
     const { props, children } = this._getChildren(propsAndChildren)
 
     const _children = children as Props;
 
+    this.tagName = tag
     this.children = this._makePropsProxy(_children);
     this.props = this._makePropsProxy(props);
 
@@ -39,7 +41,7 @@ export class Component<Props extends Record<string, any> = {}> {
   }
 
   private _createResources() {
-    this._element = new DocumentFragment();
+    this._element = document.createElement(this.tagName);
   }
 
   init() {
@@ -96,15 +98,17 @@ export class Component<Props extends Record<string, any> = {}> {
 
   private _render() {
     const block = this.render();
+
     if (this._element) {
-      this._element.appendChild(block);
+      this._element.replaceChildren(block);
       this._addEvents();
+      this._addAttribute();
     }
   }
 
   private _addEvents() {
-    const {events = {}} = this.props;
-    const element = this._element.firstElementChild
+    const { events = {} } = this.props;
+    const element = this._element
 
     Object.keys(events).forEach(eventName => {
       element && element.addEventListener(eventName, events[eventName]);
@@ -112,11 +116,20 @@ export class Component<Props extends Record<string, any> = {}> {
   }
 
   private _removeEvents() {
-    const {events = {}} = this.props;
-    const element = this._element.firstElementChild
+    const { events = {} } = this.props;
+    const element = this._element
 
     Object.keys(events).forEach(eventName => {
       element && element.addEventListener(eventName, events[eventName]);
+    });
+  }
+
+  private _addAttribute() {
+    const { attr = {} } = this.props;
+    const element = this._element
+
+    Object.entries(attr).forEach(([key, value]) => {
+      element && element.setAttribute(key, value);
     });
   }
 
@@ -197,5 +210,13 @@ export class Component<Props extends Record<string, any> = {}> {
         return true;
       }
     });
+  }
+
+  show() {
+    this.getContent().style.display = 'block';
+  }
+
+  hide() {
+    this.getContent().style.display = 'none';
   }
 }

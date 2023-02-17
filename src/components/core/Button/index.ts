@@ -8,12 +8,24 @@ interface IButtonProps {
   className: string;
   value: string | HTMLElement;
   theme?: string;
+  attr?: Record<string, any>;
   events?: Record<string, (event: Event) => void>
 }
 
 class Button extends Component<IButtonProps> {
   constructor(props: IButtonProps) {
-    super(props);
+    const { theme = 'default', className } = props;
+    const rootClassName = cn(styles.Root, className, {
+      [styles.Transparent]: theme === 'transparent',
+      [styles.Primary]: theme === 'default'
+    });
+
+    super('button', {
+      attr: {
+        type: 'Button',
+        class: rootClassName,
+      },
+      ...props });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {
@@ -21,13 +33,9 @@ class Button extends Component<IButtonProps> {
   }
 
   render() {
-    const { className, value, theme = 'default'} = this.props;
-    const rootClassName = cn(className, {
-      [styles.Transparent]: theme === 'transparent',
-      [styles.Primary]: theme === 'default'
-    });
+    const { value } = this.props;
 
-    return this.compile(this.templateNode, { className: rootClassName, value, theme })
+    return this.compile(this.templateNode, { value })
   }
 }
 

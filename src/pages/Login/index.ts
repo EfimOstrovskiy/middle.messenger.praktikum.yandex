@@ -8,6 +8,7 @@ import Button from '../../components/core/Button';
 import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
 
 interface ILoginProps {
+  attr?: Record<string, any>;
   auth?: FormAuth
 }
 
@@ -29,6 +30,7 @@ class Login extends Component<ILoginProps> {
         className: styles.Input,
         placeholder: label,
         name,
+        value: '',
         events: {
           focusin: (event) => {
             const input = event.target as HTMLInputElement
@@ -64,7 +66,13 @@ class Login extends Component<ILoginProps> {
     });
     const auth = new FormAuth({ title: 'Вход', fields, buttons });
 
-    super({ auth, ...props });
+    super('div',{
+      attr: {
+        class: styles.Root
+      },
+      auth,
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

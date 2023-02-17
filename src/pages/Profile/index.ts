@@ -9,20 +9,22 @@ import Button from '../../components/core/Button';
 import BACK_ICON from '../../../public/images/icons/back.svg';
 
 interface IProfileProps {
+  attr?: Record<string, any>;
   backProfile?: Button;
-  userData?: UserDataList;
+  userData?: UserDataList | UserDataList[];
+  saveData?: Button;
   changeData?: Button;
   changePassword?: Button;
   exit?: Button;
 }
 
 const itemsInit = [
-  { title: 'Почта', type: 'text', name: 'email', value: 'admin@mail.ru' },
-  { title: 'Логин', type: 'text', name: 'login', value: 'admin' },
-  { title: 'Имя', type: 'text', name: 'first_name', value: 'Ефим' },
-  { title: 'Фамилия', type: 'text', name: 'second_name', value: 'Островский' },
-  { title: 'Имя в чате', type: 'text', name: 'display_name', value: 'RuMIN' },
-  { title: 'Телефон', type: 'text', name: 'phone', value: '+79993955535' },
+  { placeholder: 'Почта', name: 'email', value: 'admin@mail.ru' },
+  { placeholder: 'Логин', name: 'login', value: 'admin' },
+  { placeholder: 'Имя', name: 'first_name', value: 'Ефим' },
+  { placeholder: 'Фамилия', name: 'second_name', value: 'Островский' },
+  { placeholder: 'Имя в чате', name: 'display_name', value: 'RuMIN' },
+  { placeholder: 'Телефон', name: 'phone', value: '+79993955535' },
 ];
 
 class Profile extends Component<IProfileProps> {
@@ -31,7 +33,27 @@ class Profile extends Component<IProfileProps> {
       className: styles.Cancel,
       value: `<img src="${BACK_ICON}" alt="Назад к чатам" />`
     });
+
     const userData = new UserDataList({ className: styles.Data, itemsInit });
+
+    const saveData = new Button({
+      className: styles.Save,
+      value: 'Сохранить',
+      events: {
+        click: () =>{
+          userData.setProps({
+            itemsInit: itemsInit
+          });
+
+          saveData.hide();
+          changeData.show();
+          changePassword.show();
+          exit.show();
+        }
+      }
+    })
+    saveData.hide();
+
     const changeData = new Button({
       className: styles.Button,
       value: 'Изменить данные',
@@ -40,27 +62,55 @@ class Profile extends Component<IProfileProps> {
         click: (event) => {
           const target = event.target as HTMLElement;
           const form =target.closest('form');
+
           if (form) {
             form.querySelectorAll('input')
               .forEach(input => input.removeAttribute('readonly'));
           }
+
+          saveData.show();
+          changeData.hide();
+          changePassword.hide();
+          exit.hide();
         }
       }
     });
+
     const changePassword = new Button({
       className: styles.Button,
       value: 'Изменить пароль',
       theme: 'transparent',
+      events: {
+        click: () => {
+          userData.setProps({
+            itemsInit: [
+              { placeholder: 'Старый пароль', name: 'old_password', value: '' },
+              { placeholder: 'Новый пароль', name: 'new_password', value: '' },
+              { placeholder: 'Повторите новый пароль', name: 'repeat_new_password', value: '' },
+            ]
+          });
+
+          saveData.show();
+          changeData.hide();
+          changePassword.hide();
+          exit.hide();
+        }
+      }
     });
+
     const exit = new Button({
       className: cn(styles.Exit, styles.Button),
       value: 'Выйти',
       theme: 'transparent'
     });
 
-    super({
+    super('div',{
+      attr: {
+        class: styles.Root
+      },
       backProfile,
       userData,
+      saveData,
       changeData,
       changePassword,
       exit,
@@ -73,12 +123,13 @@ class Profile extends Component<IProfileProps> {
   }
 
   render() {
-    const { backProfile, userData, changeData, changePassword, exit } = this.props;
+    const { backProfile, userData, saveData, changeData, changePassword, exit } = this.props;
 
     return this.compile(this.templateNode, {
       backProfile,
       name: 'Ефим Островский',
       userData,
+      saveData,
       changeData,
       changePassword,
       exit

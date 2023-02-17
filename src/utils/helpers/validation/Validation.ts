@@ -41,11 +41,12 @@ export const ValidationResultView = (field: HTMLInputElement, result: { success:
   if (messageNode && formNode) {
     if (!result.success) {
       messageNode.textContent = result.messageError;
-      formNode.classList.add('validation-error')
+      formNode.classList.add('validation-error');
+      formNode.classList.remove('validation-success');
     } else {
       messageNode.textContent = '';
-      formNode.classList.remove('validation-error')
-      formNode.classList.add('validation-success')
+      formNode.classList.remove('validation-error');
+      formNode.classList.add('validation-success');
     }
   }
 };

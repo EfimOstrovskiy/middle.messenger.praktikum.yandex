@@ -33,6 +33,7 @@ class SingIn extends Component<ISingInProps> {
         className: styles.Input,
         placeholder: label,
         name,
+        value: '',
         events: {
           focusin: (event) => {
             const target = event.target as HTMLInputElement;
@@ -70,7 +71,7 @@ class SingIn extends Component<ISingInProps> {
     });
     const auth = new FormAuth({ title: 'Регистрация', fields, buttons });
 
-    super({ auth, ...props });
+    super('div',{ auth, ...props });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

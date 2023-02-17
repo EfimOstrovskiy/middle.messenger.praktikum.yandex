@@ -1,23 +1,29 @@
+import * as styles from './UserDataList.module.scss';
+
 import { compileComponent, Component } from '../../../utils';
 import template from './UserDataList';
-import UserDataListItem from './UserDataListItem';
+import cn from 'classnames';
+import Input from "../../core/Input";
 import { handleBlur, handleFocus } from '../../../utils/helpers';
 
 interface IUserDataListProps {
   className: string;
   itemsInit: Record<string, string>[];
-  items?: UserDataListItem | UserDataListItem[]
+  attr?: Record<string, any>;
+  items?: Input | Input[]
 }
 
 class UserDataList extends Component<IUserDataListProps> {
   constructor(props: IUserDataListProps) {
+    const { className } = props;
     const items = props.itemsInit.map((item) => {
-      const { title, type, name, value } = item;
-      return new UserDataListItem({
-        title,
-        type,
+      const { placeholder, name, value } = item;
+      return new Input({
+        className: '',
+        placeholder,
         name,
         value,
+        theme: 'profile',
         events: {
           focusin: (event) => {
             const target = event.target as HTMLInputElement;
@@ -30,14 +36,37 @@ class UserDataList extends Component<IUserDataListProps> {
             handleBlur(target, 'base');
           }
         }
-      }) ;
+      });
     });
 
-    super({ items, ...props});
+    super('div', {
+      attr: {
+        class: cn(styles.Root, className)
+      },
+      items,
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {
     return compileComponent(template, { ...args });
+  }
+
+  componentDidUpdate(oldProps: IUserDataListProps, newProps: IUserDataListProps) {
+    if (oldProps['itemsInit'] !== newProps['itemsInit']) {
+      this.children.items = newProps['itemsInit'].map((item) => {
+        const { placeholder, name, value } = item;
+        return new Input({
+          className: '',
+          placeholder,
+          name,
+          value,
+          theme: 'profile',
+        });
+      });
+    }
+
+    return oldProps['itemsInit'] !== newProps['itemsInit']
   }
 
   render() {

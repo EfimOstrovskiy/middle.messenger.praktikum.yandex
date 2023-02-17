@@ -10,7 +10,7 @@ class ServerError extends Component<IServerErrorProps> {
   constructor(props: IServerErrorProps = {}) {
     const error = new Error({ codeError: '500', textError: 'Мы уже фиксим'});
 
-    super({ error, ...props });
+    super('div',{ error, ...props });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

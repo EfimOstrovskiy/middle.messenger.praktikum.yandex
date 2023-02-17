@@ -5,8 +5,9 @@ import template from './Error';
 import Button from '../../core/Button';
 
 interface IErrorProps {
-  codeError: string,
-  textError: string
+  codeError: string;
+  textError: string;
+  attr?: Record<string, any>;
   back?: Button
 }
 
@@ -16,13 +17,14 @@ export class Error extends Component<IErrorProps> {
       className: styles.Back,
       value: 'Назад к чатам',
       theme: 'transparent',
-      events: {
-        click: () => {
-          console.log('test')
-        }
-      }
     });
-    super({ back, ...props});
+    super('div', {
+      attr: {
+        class: styles.Root
+      },
+      back,
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {
