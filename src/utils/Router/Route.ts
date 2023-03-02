@@ -1,40 +1,44 @@
 import { renderComponent } from '../';
 
 export class Route {
-  _pathname: any;
-  _blockClass: any;
-  _block: any;
-  _props: any;
+  pathname: any;
+  blockClass: any;
+  block: any;
+  props: Record<string, any>;
+  tag: string
 
-  constructor(pathname: any, view: any, props: any) {
-    this._pathname = pathname;
-    this._blockClass = view;
-    this._block = null;
-    this._props = props;
+  constructor(pathname: any, view: string, props: Record<string, any>, tag: string) {
+    this.pathname = pathname;
+    this.blockClass = view;
+    this.block = null;
+    this.props = props;
+    this.tag = tag;
   }
 
   navigate(pathname: any) {
     if (this.match(pathname)) {
-      this._pathname = pathname;
+      this.pathname = pathname;
+
       this.render();
     }
   }
 
   leave() {
-    if (this._block) {
-      const root = document.getElementById(this._props.rootQuery)
-      root && root.replaceChildren()
+    if (this.block) {
+      this.block = null;
     }
   }
 
   match(pathname: any) {
-    return pathname === this._pathname;
+    return pathname === this.pathname;
   }
 
   render() {
-    if (!this._block) {
-      this._block = new this._blockClass();
-      renderComponent(this._props.rootQuery, this._block.getContent());
+    if (!this.block) {
+      this.block = new this.blockClass(this.tag);
+
+      renderComponent(this.props.rootQuery, this.block.getContent());
+
       return;
     }
   }

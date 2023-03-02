@@ -1,14 +1,21 @@
 import * as styles from './Profile.module.scss';
 
 import { compileComponent, Component } from '../../utils';
+import { router } from '../../utils/Router';
+import { connect } from '../../utils/Store/Connect';
+import { userUpdate } from '../../utils/Store/actions/userUpdate';
+import { userLogout } from '../../utils/Store/actions/userLogout';
+import updateUserPassword from '../../api/methods/updateUserPassword';
 import cn from 'classnames';
 import template from './Profile';
 import UserDataList from '../../components/block/UserDataList';
 import Button from '../../components/core/Button';
+import { handleSubmit, SerializeForm } from "../../utils/helpers";
 
 import BACK_ICON from '../../../public/images/icons/back.svg';
 
 interface IProfileProps {
+  user?: Record<string, any>;
   attr?: Record<string, any>;
   backProfile?: Button;
   userData?: UserDataList | UserDataList[];
@@ -18,37 +25,61 @@ interface IProfileProps {
   exit?: Button;
 }
 
-const itemsInit = [
-  { placeholder: 'Почта', name: 'email', value: 'admin@mail.ru' },
-  { placeholder: 'Логин', name: 'login', value: 'admin' },
-  { placeholder: 'Имя', name: 'first_name', value: 'Ефим' },
-  { placeholder: 'Фамилия', name: 'second_name', value: 'Островский' },
-  { placeholder: 'Имя в чате', name: 'display_name', value: 'RuMIN' },
-  { placeholder: 'Телефон', name: 'phone', value: '+79993955535' },
+const items = [
+  { placeholder: 'Почта', name: 'email' },
+  { placeholder: 'Логин', name: 'login' },
+  { placeholder: 'Имя', name: 'first_name' },
+  { placeholder: 'Фамилия', name: 'second_name' },
+  { placeholder: 'Имя в чате', name: 'display_name' },
+  { placeholder: 'Телефон', name: 'phone' }
 ];
 
 class Profile extends Component<IProfileProps> {
-  constructor(props: IProfileProps = {}) {
-    const backProfile = new Button({
-      className: styles.Cancel,
-      value: `<img src="${BACK_ICON}" alt="Назад к чатам" />`
+  constructor(tag: string, props: IProfileProps = {}) {
+    let viewChange: string | null = null;
+
+    const itemsInit = items.map((item: any) => {
+      const state = props.user;
+      if (state) {
+        return { placeholder: item.placeholder, name: item.name, value: state[item.name] };
+      } else {
+        return { placeholder: item.placeholder, name: item.name, value: '' };
+      }
     });
 
-    const userData = new UserDataList({ className: styles.Data, itemsInit });
+    const backProfile = new Button({
+      className: styles.Cancel,
+      value: `<img src="${BACK_ICON}" alt="Назад к чатам" />`,
+      events: {
+        click: () => router.go('/')
+      }
+    });
+
+    const userData = new UserDataList({ className: styles.Data, itemsInit, readonly: 'readonly' });
 
     const saveData = new Button({
       className: styles.Save,
       value: 'Сохранить',
       events: {
-        click: () =>{
+        click: (event) =>{event.preventDefault();
+          const target = event.target as HTMLElement;
+          const form = target.closest('form');
+          let fieldsName = userData.props.itemsInit.map(field => field.name);
+
+          if (viewChange === 'data') {
+            handleSubmit(target, 'base') && userUpdate(SerializeForm(form, fieldsName));
+          }
+
+          if (viewChange === 'password') {
+            handleSubmit(target, 'base') && updateUserPassword(SerializeForm(form, fieldsName));
+          }
+
           userData.setProps({
-            itemsInit: itemsInit
+            itemsInit: itemsInit,
+            readonly: 'readonly'
           });
 
-          saveData.hide();
-          changeData.show();
-          changePassword.show();
-          exit.show();
+          this.viewControl();
         }
       }
     })
@@ -59,19 +90,14 @@ class Profile extends Component<IProfileProps> {
       value: 'Изменить данные',
       theme: 'transparent',
       events: {
-        click: (event) => {
-          const target = event.target as HTMLElement;
-          const form =target.closest('form');
+        click: () => {
+          userData.setProps({
+            readonly: ''
+          });
 
-          if (form) {
-            form.querySelectorAll('input')
-              .forEach(input => input.removeAttribute('readonly'));
-          }
+          viewChange = 'data';
 
-          saveData.show();
-          changeData.hide();
-          changePassword.hide();
-          exit.hide();
+          this.viewControl();
         }
       }
     });
@@ -84,16 +110,15 @@ class Profile extends Component<IProfileProps> {
         click: () => {
           userData.setProps({
             itemsInit: [
-              { placeholder: 'Старый пароль', name: 'old_password', value: '' },
-              { placeholder: 'Новый пароль', name: 'new_password', value: '' },
-              { placeholder: 'Повторите новый пароль', name: 'repeat_new_password', value: '' },
-            ]
+              { placeholder: 'Старый пароль', name: 'oldPassword', value: '' },
+              { placeholder: 'Новый пароль', name: 'newPassword', value: '' },
+            ],
+            readonly: ''
           });
 
-          saveData.show();
-          changeData.hide();
-          changePassword.hide();
-          exit.hide();
+          viewChange = 'password';
+
+          this.viewControl();
         }
       }
     });
@@ -101,10 +126,15 @@ class Profile extends Component<IProfileProps> {
     const exit = new Button({
       className: cn(styles.Exit, styles.Button),
       value: 'Выйти',
-      theme: 'transparent'
+      theme: 'transparent',
+      events: {
+        click: () => {
+          userLogout().then(status => status === 200 && router.go('/login'));
+        }
+      }
     });
 
-    super('div',{
+    super(tag,{
       attr: {
         class: styles.Root
       },
@@ -122,12 +152,53 @@ class Profile extends Component<IProfileProps> {
     return compileComponent(template, { ...args });
   }
 
+  private viewControl() {
+    const saveData = this.children.saveData;
+    const changeData = this.children.changeData;
+    const changePassword = this.children.changePassword;
+    const exit = this.children.exit;
+    if (saveData.getContent().classList.contains('hide')) {
+      saveData.show();
+      changeData.hide();
+      changePassword.hide();
+      exit.hide();
+    } else {
+      saveData.hide();
+      changeData.show();
+      changePassword.show();
+      exit.show();
+    }
+  }
+
+  componentDidUpdate(oldProps: IProfileProps, newProps: IProfileProps) {
+    if (oldProps['user'] !== newProps['user']) {
+      this.children.userData.setProps({
+        itemsInit: items.map((item: any) => {
+          const state = newProps['user'];
+          if (state) {
+            return { placeholder: item.placeholder, name: item.name, value: state[item.name] };
+          } else {
+            return { placeholder: item.placeholder, name: item.name, value: '' };
+          }
+        })
+      })
+      this.props.user = newProps['user']
+    }
+    return oldProps['user'] !== newProps['user']
+  }
+
   render() {
-    const { backProfile, userData, saveData, changeData, changePassword, exit } = this.props;
+    const { user,
+      backProfile,
+      userData,
+      saveData,
+      changeData,
+      changePassword,
+      exit } = this.props;
 
     return this.compile(this.templateNode, {
       backProfile,
-      name: 'Ефим Островский',
+      name: user && user.login,
       userData,
       saveData,
       changeData,
@@ -137,4 +208,10 @@ class Profile extends Component<IProfileProps> {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state: Record<string, any>) => {
+  return {
+    user: state.user || {}
+  }
+}
+
+export default connect(Profile, mapStateToProps);

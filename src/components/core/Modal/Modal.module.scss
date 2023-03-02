@@ -1,0 +1,28 @@
+.Root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+
+  .Close {
+    margin-left: auto;
+    padding: 0;
+  }
+}
+
+.Content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background: var(--color-white);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+}

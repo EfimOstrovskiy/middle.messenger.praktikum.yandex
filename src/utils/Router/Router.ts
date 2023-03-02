@@ -1,7 +1,7 @@
 import { Route } from './';
 
 class Router {
-  static _instance: any;
+  static instance: any;
 
   routes: any
   history: any
@@ -9,8 +9,8 @@ class Router {
   _rootQuery: any
 
   constructor(rootQuery: any) {
-    if (Router._instance) {
-      return Router._instance;
+    if (Router.instance) {
+      return Router.instance;
     }
 
     this.routes = [];
@@ -18,11 +18,11 @@ class Router {
     this._currentRoute = null;
     this._rootQuery = rootQuery;
 
-    Router._instance = this;
+    Router.instance = this;
   }
 
-  use(pathname: any, block: any) {
-    const route = new Route(pathname, block, {rootQuery: this._rootQuery});
+  use(pathname: any, block: any, tag: string) {
+    const route = new Route(pathname, block, {rootQuery: this._rootQuery}, tag);
     this.routes.push(route);
     return this;
   }

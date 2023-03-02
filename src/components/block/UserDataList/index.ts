@@ -3,12 +3,13 @@ import * as styles from './UserDataList.module.scss';
 import { compileComponent, Component } from '../../../utils';
 import template from './UserDataList';
 import cn from 'classnames';
-import Input from "../../core/Input";
+import Input from '../../core/Input';
 import { handleBlur, handleFocus } from '../../../utils/helpers';
 
 interface IUserDataListProps {
   className: string;
   itemsInit: Record<string, string>[];
+  readonly: string
   attr?: Record<string, any>;
   items?: Input | Input[]
 }
@@ -23,6 +24,7 @@ class UserDataList extends Component<IUserDataListProps> {
         placeholder,
         name,
         value,
+        readonly: props.readonly,
         theme: 'profile',
         events: {
           focusin: (event) => {
@@ -53,20 +55,23 @@ class UserDataList extends Component<IUserDataListProps> {
   }
 
   componentDidUpdate(oldProps: IUserDataListProps, newProps: IUserDataListProps) {
-    if (oldProps['itemsInit'] !== newProps['itemsInit']) {
-      this.children.items = newProps['itemsInit'].map((item) => {
-        const { placeholder, name, value } = item;
-        return new Input({
-          className: '',
-          placeholder,
-          name,
-          value,
-          theme: 'profile',
+    if (oldProps !== newProps) {
+      if (newProps['itemsInit']) {
+        this.children.items = newProps['itemsInit'].map((item) => {
+          const { placeholder, name, value } = item;
+          return new Input({
+            className: '',
+            placeholder,
+            name,
+            value,
+            readonly: newProps['readonly'],
+            theme: 'profile',
+          });
         });
-      });
+      }
     }
 
-    return oldProps['itemsInit'] !== newProps['itemsInit']
+    return oldProps !== newProps;
   }
 
   render() {

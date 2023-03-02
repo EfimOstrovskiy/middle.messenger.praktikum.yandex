@@ -1,11 +1,13 @@
 import * as styles from './Login.module.scss';
 
 import { compileComponent, Component } from '../../utils';
+import { router } from '../../utils/Router';
 import template from './Login';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
+import { userLogin } from '../../utils/Store/actions/userLogin';
+import { handleBlur, handleFocus, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ILoginProps {
   attr?: Record<string, any>;
@@ -38,7 +40,7 @@ class Login extends Component<ILoginProps> {
           },
           focusout: (event) => {
             const input = event.target as HTMLInputElement
-            handleBlur(input, 'login')
+            handleBlur(input, 'login');
           }
         }
       });
@@ -55,14 +57,25 @@ class Login extends Component<ILoginProps> {
             click: (event) => {
               event.preventDefault();
               const target = event.target as HTMLElement;
+              const form = target.closest('form');
+              const fieldsName = fieldsInit.map(field => field.name);
 
-              handleSubmit(target, 'signIn');
+              handleSubmit(target, 'signIn')
+                && userLogin(SerializeForm(form, fieldsName))
+                .then(status => status === 200 && router.go('/'));
             }
           }
         });
       }
 
-      return new Button({ className, value, theme });
+      return new Button({
+        className,
+        value,
+        theme,
+        events: {
+          click: () => router.go('/sign_in')
+        }
+      });
     });
     const auth = new FormAuth({ title: 'Вход', fields, buttons });
 

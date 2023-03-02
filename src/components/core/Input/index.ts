@@ -9,6 +9,7 @@ interface IInputProps {
   placeholder: string;
   name: string;
   value: string;
+  readonly?: string;
   theme?: string;
   attr?: Record<string, any>;
   events?: Record<string, (event: Event) => void>
@@ -23,7 +24,7 @@ class Input extends Component<IInputProps> {
     });
     super('div', {
       attr: {
-        class: rootClassName
+        class: rootClassName,
       },
       ...props
     });
@@ -34,10 +35,12 @@ class Input extends Component<IInputProps> {
   }
 
   render() {
-    const { placeholder, name, value } = this.props;
-    const type = name === 'password' ? 'password' : 'text';
+    const { placeholder, name, value, readonly = '' } = this.props;
+    const type = name === 'password'
+      || name === 'oldPassword'
+      || name === 'newPassword' ? 'password' : 'text';
 
-    return this.compile(this.templateNode, { placeholder, type, name, value });
+    return this.compile(this.templateNode, { placeholder, type, name, value, readonly });
   }
 }
 

@@ -1,5 +1,4 @@
 import { Validation, ValidationModeType, ValidationResultView } from './Validation';
-import { SerializeForm } from '../SerializeFrom';
 
 export const handleFocus = (field: HTMLInputElement, mode: ValidationModeType) => {
   const result = Validation(field, mode);
@@ -16,7 +15,6 @@ export const handleSubmit = (field: HTMLElement, mode: ValidationModeType) => {
   const form = field.closest('form');
   if (form) {
     const fields = Array.from(form.querySelectorAll('input'));
-    const fieldsName = fields.map(field => field.name);
 
     fields.forEach(field => {
       const result = Validation(field, mode);
@@ -26,8 +24,6 @@ export const handleSubmit = (field: HTMLElement, mode: ValidationModeType) => {
       }
     });
 
-    if (!invalid) {
-      console.log(SerializeForm(form, fieldsName))
-    }
+    return !invalid;
   }
 };

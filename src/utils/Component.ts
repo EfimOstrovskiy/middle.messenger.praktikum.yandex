@@ -16,7 +16,7 @@ export class Component<Props extends Record<string, any> = {}> {
   tagName: string
   _element: any;
 
-  constructor(tag: string = 'div', propsAndChildren: Props) {
+  constructor(tag: string | undefined = 'div', propsAndChildren: Props) {
     const eventBus = new EventBus();
 
     const { props, children } = this._getChildren(propsAndChildren)
@@ -72,8 +72,7 @@ export class Component<Props extends Record<string, any> = {}> {
   }
 
   componentDidUpdate(oldProps: Props, newProps: Props) {
-    console.log(oldProps, newProps);
-    return true;
+    return oldProps !== newProps;
   }
 
   setProps = (nextProps: Partial<Props>) => {
@@ -213,10 +212,10 @@ export class Component<Props extends Record<string, any> = {}> {
   }
 
   show() {
-    this.getContent().style.display = 'block';
+    this.getContent().classList.remove('hide');
   }
 
   hide() {
-    this.getContent().style.display = 'none';
+    this.getContent().classList.add('hide');
   }
 }

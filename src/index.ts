@@ -1,35 +1,24 @@
 import './main.scss';
 
-import { renderComponent } from './utils';
+import { Store } from './utils/Store';
+import { router } from './utils/Router';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import ServerError from './pages/ServerError';
-import Mains from './pages/Main';
+import Main from './pages/Main';
 
-const path = window.location.pathname;
+const store = new Store();
+const auth = store.getState().auth;
 
-let page;
-
-switch (path) {
-  case "/":
-    page = new Mains();
-    break;
-  case "/login":
-    page = new Login();
-    break;
-  case "/sign_in":
-    page = new SignIn();
-    break;
-  case "/profile":
-    page = new Profile();
-    break;
-  case "/server_error":
-    page = new ServerError();
-    break;
-  default:
-    page = new NotFound();
+if (!auth || auth === 'unauthorized') {
+  router.go('/login')
 }
 
-renderComponent('root', page.getContent());
+router
+  .use('/', Main, 'div')
+  .use('/login', Login, 'div')
+  .use('/sign_in', SignIn, 'div')
+  .use('/profile', Profile, 'div')
+  .start();
+
+

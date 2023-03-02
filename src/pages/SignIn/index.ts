@@ -1,11 +1,13 @@
 import * as styles from './SignIn.module.scss';
 
 import { compileComponent, Component } from '../../utils';
+import { router } from '../../utils/Router';
 import template from './SignIn';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
+import { userSignIn} from '../../utils/Store/actions/userSignIn';
+import { handleBlur, handleFocus, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ISingInProps {
   auth?: FormAuth
@@ -60,14 +62,25 @@ class SingIn extends Component<ISingInProps> {
             click: (event) => {
               event.preventDefault();
               const target = event.target as HTMLElement;
+              const form = target.closest('form');
+              const fieldsName = fieldsInit.map(field => field.name);
 
-              handleSubmit(target, 'signIn');
+              handleSubmit(target, 'signIn')
+                && userSignIn(SerializeForm(form, fieldsName))
+                .then(status => status === 200 && router.go('/login'));
             }
           }
         });
       }
 
-      return new Button({ className, value, theme });
+      return new Button({
+        className,
+        value,
+        theme,
+        events: {
+          click: () => router.go('/login')
+        }
+      });
     });
     const auth = new FormAuth({ title: 'Регистрация', fields, buttons });
 
