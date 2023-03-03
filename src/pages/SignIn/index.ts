@@ -6,8 +6,8 @@ import template from './SignIn';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { userSignIn} from '../../utils/Store/actions/userSignIn';
-import { handleBlur, handleFocus, handleSubmit, SerializeForm } from '../../utils/helpers';
+import { userSignIn } from '../../utils/Store/actions/userSignIn';
+import { handleBlur, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ISingInProps {
   auth?: FormAuth
@@ -32,16 +32,11 @@ class SingIn extends Component<ISingInProps> {
       const { name, label } = field;
 
       return new Input({
-        className: styles.Input,
+        className: styles.input,
         placeholder: label,
         name,
         value: '',
         events: {
-          focusin: (event) => {
-            const target = event.target as HTMLInputElement;
-
-            handleFocus(target, 'signIn');
-          },
           focusout: (event) => {
             const target = event.target as HTMLInputElement;
 
@@ -66,7 +61,7 @@ class SingIn extends Component<ISingInProps> {
               const fieldsName = fieldsInit.map(field => field.name);
 
               handleSubmit(target, 'signIn')
-                && userSignIn(SerializeForm(form, fieldsName))
+                && userSignIn(SerializeForm(form!, fieldsName))
                 .then(status => status === 200 && router.go('/login'));
             }
           }

@@ -2,17 +2,17 @@ import * as styles from './Main.module.scss';
 
 const template = `
   {#modalCreate#}
-  <div class="${styles.Chats}">
-    <nav class="${styles.ChatsMenu}">
-      <div class="${styles.ChatsControl}">
+  <div class="${styles.chats}">
+    <nav class="${styles.chatsMenu}">
+      <div class="${styles.chatsControl}">
         {#createChat#}
         {#inProfile#}
       </div>
-      <input class="${styles.Search}" placeholder="Поиск" type="text" name="search"/>
+      {#searchChat#}
     </nav>
     {#chatsList#}
   </div>
-  <div class="${styles.Message}">
+  <div class="${styles.message}">
     {#message#}
   </div>
 `;

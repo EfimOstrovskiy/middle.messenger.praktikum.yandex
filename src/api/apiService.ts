@@ -1,40 +1,51 @@
 import HTTPTransport from '../utils/HTTPTransport';
 
-const defaultApiUrl = 'https://ya-praktikum.tech/api/v2'
-const defaultHeader = {
+enum METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
+
+const DEFAULT_API_URL = 'https://ya-praktikum.tech/api/v2'
+const DEFAULT_HEADER = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Credentials': 'true'
 };
 
-export function sendApiRequest(path: string, method: string, data?: Record<string, any>) {
+export function sendApiRequest(
+  path: string,
+  method: string,
+  data?: Record<string, any>,
+  header: Record<string, any> = DEFAULT_HEADER ) {
   const httpFetch = new HTTPTransport();
 
   switch (method) {
-    case 'GET':
-      return httpFetch.get(`${defaultApiUrl}${path}`, {
+    case METHODS.GET:
+      return httpFetch.get(`${DEFAULT_API_URL}${path}`, {
         headers:{
-          ...defaultHeader
+          ...header
         },
         data: data
       });
-    case 'POST':
-      return httpFetch.post(`${defaultApiUrl}${path}`, {
+    case METHODS.POST:
+      return httpFetch.post(`${DEFAULT_API_URL}${path}`, {
         headers:{
-          ...defaultHeader
+          ...header
         },
         data: JSON.stringify(data)
       });
-    case 'PUT':
-      return httpFetch.put(`${defaultApiUrl}${path}`, {
+    case METHODS.PUT:
+      return httpFetch.put(`${DEFAULT_API_URL}${path}`, {
         headers:{
-          ...defaultHeader
+          ...header
         },
         data: JSON.stringify(data)
       });
-    case 'DELETE':
-      return httpFetch.delete(`${defaultApiUrl}${path}`, {
+    case METHODS.DELETE:
+      return httpFetch.delete(`${DEFAULT_API_URL}${path}`, {
         headers:{
-          ...defaultHeader
+          ...header
         },
         data: JSON.stringify(data)
       });

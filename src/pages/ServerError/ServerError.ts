@@ -1,7 +1,7 @@
 import * as styles from './ServerError.module.scss';
 
 const template = `
-  <div class="${styles.Root}">
+  <div class="${styles.root}">
     {#error#}
   </div>
 `;

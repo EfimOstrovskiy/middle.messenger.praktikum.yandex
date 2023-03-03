@@ -7,7 +7,7 @@ import template from './ChatList';
 interface IChatListProps {
   nameChat: string;
   lastMessage: string;
-  attr?: Record<string, any>
+  attr?: Record<string, string | number>
   events?: Record<string, (event: Event) => void>
 }
 
@@ -15,17 +15,27 @@ class ChatList extends Component<IChatListProps> {
   constructor(props: IChatListProps) {
     super('div', {
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       events: {
         click: (event) => {
-          const target = event.target as HTMLElement;
-          const parent = target.parentElement
-          parent && parent.querySelectorAll('div')
-            .forEach(node => node.classList.remove(styles.Active));
-          target.classList.add(styles.Active);
+          const target = event.currentTarget as HTMLElement;
+          const parent = target.parentElement;
+          const searchField: HTMLInputElement | null = document.querySelector('[name="search"]');
 
-          props.nameChat && activeChat(props.nameChat)
+          parent?.querySelectorAll(`.${styles.root}`)
+            .forEach(node => node.classList.remove(styles.active));
+
+          target.classList.add(styles.active);
+
+          activeChat(props.nameChat).then(() => {
+            const titles = document.querySelectorAll('[data-name]');
+
+            searchField!.value = '';
+            titles.forEach(title => {
+              title?.parentElement?.parentElement?.classList.remove('hide');
+            });
+          });
         }
       },
       ...props
@@ -39,7 +49,7 @@ class ChatList extends Component<IChatListProps> {
   render() {
     const { nameChat, lastMessage } = this.props;
 
-    return this.compile(this.templateNode, { nameChat, lastMessage });
+    return this.compile(this.templateNode, { nameChat, lastMessage, dataNameChat: nameChat });
   }
 }
 

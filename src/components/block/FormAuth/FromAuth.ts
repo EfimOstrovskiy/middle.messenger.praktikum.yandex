@@ -1,12 +1,12 @@
 import * as styles from './FromAuth.module.scss';
 
 const template = `
-  <h3 class="${styles.Title}">{#title#}</h3>
-  <form class="${styles.Form}">
-    <div class="${styles.Fields}">
+  <h3 class="${styles.title}">{#title#}</h3>
+  <form class="${styles.form}">
+    <div class="${styles.fields}">
       {#fields#}
     </div>
-    <div class="${styles.Control}">
+    <div class="${styles.control}">
       {#buttons#}
     </div>
   </form>

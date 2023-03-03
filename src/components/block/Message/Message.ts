@@ -3,21 +3,22 @@ import cn from 'classnames';
 
 const template = `
   {#modalToggleUser#}
-  <div class="${cn(styles.Panel, styles.Header)}">
-    <div class="${styles.Avatar}">
+  <div class="${cn(styles.panel, styles.header)}">
+    <div class="${styles.avatar}">
     </div>
-    <span class="${styles.Name}">{#nameChat#}</span>
-    <div class="${styles.Control}">
+    <span class="${styles.name}">{#nameChat#}</span>
+    <span class="${styles.count}">{#countUser#}</span>
+    <div class="${styles.control}">
        {#addUser#}
        {#removeUser#}
     </div>
   </div>
-  <div class="${styles.Dialog}">
+  <div class="${styles.dialog}">
     {#dialog#}
   </div>
-  <form class="${cn(styles.Panel, styles.Form)}">
+  <form class="${cn(styles.panel, styles.form)}">
     {#selectMedia#}
-    <input class="${styles.Field}" placeholder="Сообщение" type="text" name="message" />
+    <input class="${styles.field}" placeholder="Сообщение" type="text" name="message" />
     {#sendMessage#}
   </form>
 `;

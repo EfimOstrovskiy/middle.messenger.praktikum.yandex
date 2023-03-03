@@ -5,7 +5,7 @@ import { router } from '../../utils/Router';
 import { connect } from '../../utils/Store/Connect';
 import { userUpdate } from '../../utils/Store/actions/userUpdate';
 import { userLogout } from '../../utils/Store/actions/userLogout';
-import updateUserPassword from '../../api/methods/updateUserPassword';
+import { updateUserPassword } from '../../api/methods/updateUserPassword';
 import cn from 'classnames';
 import template from './Profile';
 import UserDataList from '../../components/block/UserDataList';
@@ -16,7 +16,7 @@ import BACK_ICON from '../../../public/images/icons/back.svg';
 
 interface IProfileProps {
   user?: Record<string, any>;
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   backProfile?: Button;
   userData?: UserDataList | UserDataList[];
   saveData?: Button;
@@ -48,17 +48,17 @@ class Profile extends Component<IProfileProps> {
     });
 
     const backProfile = new Button({
-      className: styles.Cancel,
+      className: styles.cancel,
       value: `<img src="${BACK_ICON}" alt="Назад к чатам" />`,
       events: {
         click: () => router.go('/')
       }
     });
 
-    const userData = new UserDataList({ className: styles.Data, itemsInit, readonly: 'readonly' });
+    const userData = new UserDataList({ className: styles.data, itemsInit, readonly: 'readonly' });
 
     const saveData = new Button({
-      className: styles.Save,
+      className: styles.save,
       value: 'Сохранить',
       events: {
         click: (event) =>{event.preventDefault();
@@ -67,11 +67,11 @@ class Profile extends Component<IProfileProps> {
           let fieldsName = userData.props.itemsInit.map(field => field.name);
 
           if (viewChange === 'data') {
-            handleSubmit(target, 'base') && userUpdate(SerializeForm(form, fieldsName));
+            handleSubmit(target, 'base') && userUpdate(SerializeForm(form!, fieldsName));
           }
 
           if (viewChange === 'password') {
-            handleSubmit(target, 'base') && updateUserPassword(SerializeForm(form, fieldsName));
+            handleSubmit(target, 'base') && updateUserPassword(SerializeForm(form!, fieldsName));
           }
 
           userData.setProps({
@@ -86,7 +86,7 @@ class Profile extends Component<IProfileProps> {
     saveData.hide();
 
     const changeData = new Button({
-      className: styles.Button,
+      className: styles.button,
       value: 'Изменить данные',
       theme: 'transparent',
       events: {
@@ -103,7 +103,7 @@ class Profile extends Component<IProfileProps> {
     });
 
     const changePassword = new Button({
-      className: styles.Button,
+      className: styles.button,
       value: 'Изменить пароль',
       theme: 'transparent',
       events: {
@@ -124,7 +124,7 @@ class Profile extends Component<IProfileProps> {
     });
 
     const exit = new Button({
-      className: cn(styles.Exit, styles.Button),
+      className: cn(styles.exit, styles.button),
       value: 'Выйти',
       theme: 'transparent',
       events: {
@@ -136,7 +136,7 @@ class Profile extends Component<IProfileProps> {
 
     super(tag,{
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       backProfile,
       userData,
@@ -153,20 +153,16 @@ class Profile extends Component<IProfileProps> {
   }
 
   private viewControl() {
-    const saveData = this.children.saveData;
-    const changeData = this.children.changeData;
-    const changePassword = this.children.changePassword;
-    const exit = this.children.exit;
-    if (saveData.getContent().classList.contains('hide')) {
-      saveData.show();
-      changeData.hide();
-      changePassword.hide();
-      exit.hide();
+    if (this.children.saveData.getContent().classList.contains('hide')) {
+      this.children.saveData.show();
+      this.children.changeData.hide();
+      this.children.changePassword.hide();
+      this.children.exit.hide();
     } else {
-      saveData.hide();
-      changeData.show();
-      changePassword.show();
-      exit.show();
+      this.children.saveData.hide();
+      this.children.changeData.show();
+      this.children.changePassword.show();
+      this.children.exit.show();
     }
   }
 
@@ -175,11 +171,11 @@ class Profile extends Component<IProfileProps> {
       this.children.userData.setProps({
         itemsInit: items.map((item: any) => {
           const state = newProps['user'];
-          if (state) {
-            return { placeholder: item.placeholder, name: item.name, value: state[item.name] };
-          } else {
-            return { placeholder: item.placeholder, name: item.name, value: '' };
-          }
+          return {
+            placeholder: item.placeholder,
+            name: item.name,
+            value: state ? state[item.name] : ''
+          };
         })
       })
       this.props.user = newProps['user']
@@ -198,7 +194,7 @@ class Profile extends Component<IProfileProps> {
 
     return this.compile(this.templateNode, {
       backProfile,
-      name: user && user.login,
+      name: user?.display_name ? user.display_name : user?.first_name,
       userData,
       saveData,
       changeData,
@@ -210,7 +206,7 @@ class Profile extends Component<IProfileProps> {
 
 const mapStateToProps = (state: Record<string, any>) => {
   return {
-    user: state.user || {}
+    user: state.user || null
   }
 }
 

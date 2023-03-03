@@ -1,4 +1,4 @@
-import logout from '../../../api/methods/logout';
+import { logout } from '../../../api/methods/logout';
 import { Store } from '../Store';
 
 export async function userLogout() {

@@ -9,10 +9,9 @@ import template from './ToggleUser';
 import { handleSubmit, SerializeForm } from '../../../utils/helpers';
 
 interface IToggleUserProps {
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   title: string;
   state: string;
-  chatId: string | number;
   nameUser?: Input;
   inUser?: Button;
   deleteUser?: Button
@@ -21,7 +20,7 @@ interface IToggleUserProps {
 class ToggleUser extends Component<IToggleUserProps> {
   constructor(props: IToggleUserProps) {
     const nameUser = new Input({
-      className: styles.Name,
+      className: styles.name,
       placeholder: 'Ник пользователя',
       name: 'login',
       value: ''
@@ -33,11 +32,11 @@ class ToggleUser extends Component<IToggleUserProps> {
       events: {
         click: (event) => {
           event.preventDefault();
-          const target = event.target as HTMLElement;
+          const target = event.target as HTMLFormElement;
           const form = target.closest('form');
 
           handleSubmit(target, 'signIn')
-          && addUser(SerializeForm(form, 'login').login, props.chatId);
+          && addUser(SerializeForm(form!, 'login').login);
         }
       }
     });
@@ -48,18 +47,18 @@ class ToggleUser extends Component<IToggleUserProps> {
       events: {
         click: (event) => {
           event.preventDefault();
-          const target = event.target as HTMLElement;
+          const target = event.target as HTMLFormElement;
           const form = target.closest('form');
 
           handleSubmit(target, 'signIn')
-          && removeUser(SerializeForm(form, 'login').login, props.chatId);
+          && removeUser(SerializeForm(form!, 'login').login);
         }
       }
     });
 
     super('form', {
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       inUser,
       deleteUser,

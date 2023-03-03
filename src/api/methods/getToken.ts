@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function getToken(chatId: string | number) {
+export function getToken(chatId: string | number) {
   return sendApiRequest(`/chats/token/${chatId}`, 'POST');
 }
-
-export default getToken;

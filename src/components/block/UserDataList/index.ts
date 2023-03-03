@@ -4,13 +4,13 @@ import { compileComponent, Component } from '../../../utils';
 import template from './UserDataList';
 import cn from 'classnames';
 import Input from '../../core/Input';
-import { handleBlur, handleFocus } from '../../../utils/helpers';
+import { handleBlur } from '../../../utils/helpers';
 
 interface IUserDataListProps {
   className: string;
   itemsInit: Record<string, string>[];
   readonly: string
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   items?: Input | Input[]
 }
 
@@ -27,11 +27,6 @@ class UserDataList extends Component<IUserDataListProps> {
         readonly: props.readonly,
         theme: 'profile',
         events: {
-          focusin: (event) => {
-            const target = event.target as HTMLInputElement;
-
-            handleFocus(target, 'base');
-          },
           focusout: (event) => {
             const target = event.target as HTMLInputElement;
 
@@ -43,7 +38,7 @@ class UserDataList extends Component<IUserDataListProps> {
 
     super('div', {
       attr: {
-        class: cn(styles.Root, className)
+        class: cn(styles.root, className)
       },
       items,
       ...props

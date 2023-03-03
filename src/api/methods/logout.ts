@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function logout() {
+export function logout() {
   return sendApiRequest('/auth/logout', 'POST');
 }
-
-export default logout;

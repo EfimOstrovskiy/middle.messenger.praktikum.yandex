@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function login(data: Record<string, any>) {
+export function login(data: Record<string, string | number>) {
   return sendApiRequest('/auth/signin', 'POST', data);
 }
-
-export default login;

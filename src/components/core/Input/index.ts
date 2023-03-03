@@ -11,16 +11,16 @@ interface IInputProps {
   value: string;
   readonly?: string;
   theme?: string;
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   events?: Record<string, (event: Event) => void>
 }
 
 class Input extends Component<IInputProps> {
   constructor(props: IInputProps) {
     const { className, theme = 'auth' } = props;
-    const rootClassName = cn(className, styles.Root, {
-      [styles.Auth]: theme === 'auth',
-      [styles.Profile]: theme === 'profile'
+    const rootClassName = cn(className, styles.root, {
+      [styles.auth]: theme === 'auth',
+      [styles.profile]: theme === 'profile'
     });
     super('div', {
       attr: {

@@ -1,6 +1,7 @@
-import addChat from '../../../api/methods/addChat';
-import searchUser from '../../../api/methods/searchUser';
-import addUserChat from '../../../api/methods/addUserChat';
+import { addChat } from '../../../api/methods/addChat';
+import { searchUser } from '../../../api/methods/searchUser';
+import { getChat } from '../../../api/methods/getChat';
+import { addUserChat } from '../../../api/methods/addUserChat';
 import { Store } from '../Store';
 
 export async function createChat(data: Record<string, any>) {
@@ -18,6 +19,11 @@ export async function createChat(data: Record<string, any>) {
 
     if (createChat.status === 200) {
       await addUserChat({ users: [state.id, ...userId], chatId: chatId.id });
+      const chats: any = await getChat({});
+
+      store.set('chats', JSON.parse(chats.response));
     }
+
+    return createChat.status
   }
 }

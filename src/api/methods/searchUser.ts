@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function searchUser(data: Record<string, any>) {
+export function searchUser(data: Record<string, string>) {
   return sendApiRequest('/user/search', 'POST', data);
 }
-
-export default searchUser;

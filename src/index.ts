@@ -21,4 +21,6 @@ router
   .use('/profile', Profile, 'div')
   .start();
 
-
+// import deleteChat from "./api/methods/deleteChat";
+//
+// deleteChat({ chatId: 5829 })

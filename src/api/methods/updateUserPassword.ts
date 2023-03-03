@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function updateUserPassword(data: Record<string, any>) {
+export function updateUserPassword(data: Record<string, string | number>) {
   return sendApiRequest('/user/password', 'PUT', data);
 }
-
-export default updateUserPassword;

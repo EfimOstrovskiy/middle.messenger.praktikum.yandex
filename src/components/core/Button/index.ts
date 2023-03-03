@@ -8,16 +8,16 @@ interface IButtonProps {
   className: string;
   value: string | HTMLElement;
   theme?: string;
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   events?: Record<string, (event: Event) => void>
 }
 
 class Button extends Component<IButtonProps> {
   constructor(props: IButtonProps) {
     const { theme = 'default', className } = props;
-    const rootClassName = cn(styles.Root, className, {
-      [styles.Transparent]: theme === 'transparent',
-      [styles.Primary]: theme === 'default'
+    const rootClassName = cn(styles.root, className, {
+      [styles.transparent]: theme === 'transparent',
+      [styles.primary]: theme === 'default'
     });
 
     super('button', {

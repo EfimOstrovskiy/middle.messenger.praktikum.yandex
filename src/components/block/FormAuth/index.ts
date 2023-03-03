@@ -9,14 +9,14 @@ interface IFormAuthProps {
   title: string;
   fields: Input | Input[];
   buttons: Button | Button[];
-  attr?: Record<string, any>
+  attr?: Record<string, string | number>
 }
 
 class FormAuth extends Component<IFormAuthProps> {
   constructor(props: IFormAuthProps) {
     super('div', {
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       ...props
     });

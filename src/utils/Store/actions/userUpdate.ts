@@ -1,4 +1,4 @@
-import updateUserData from '../../../api/methods/updateUserData';
+import { updateUserData } from '../../../api/methods/updateUserData';
 import { Store } from '../Store';
 
 export async function userUpdate(data: Record<string, any>) {

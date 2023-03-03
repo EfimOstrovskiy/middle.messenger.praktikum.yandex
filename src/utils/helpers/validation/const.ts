@@ -2,7 +2,7 @@ export const REGEXP_SETTING: Record<string, RegExp> = {
   name: /^[A-ZА-Я][a-zа-я]+$/,
   login: /^[a-zA-Z][a-zA-Z0-9-_\.]{3,20}$/,
   email: /^\w+@\w+\.\w+$/,
-  password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
+  password: /^(?=.*[0-9])(?=.*[A-Za-z])[0-9a-zA-Z!_@#$%^&*]{8,40}$/,
   phone: /^((\+7|7|8)+([0-9]){10,15})$/,
   message: /(.|\s)*\S(.|\s)*/
 };

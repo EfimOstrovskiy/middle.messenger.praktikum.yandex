@@ -1,13 +1,13 @@
-import { renderComponent } from '../';
+import { renderComponent, Component } from '../';
 
 export class Route {
-  pathname: any;
+  pathname: string;
   blockClass: any;
-  block: any;
+  block: Component | null;
   props: Record<string, any>;
   tag: string
 
-  constructor(pathname: any, view: string, props: Record<string, any>, tag: string) {
+  constructor(pathname: string, view: string, props: Record<string, any>, tag: string) {
     this.pathname = pathname;
     this.blockClass = view;
     this.block = null;
@@ -15,7 +15,7 @@ export class Route {
     this.tag = tag;
   }
 
-  navigate(pathname: any) {
+  navigate(pathname: string) {
     if (this.match(pathname)) {
       this.pathname = pathname;
 
@@ -29,7 +29,7 @@ export class Route {
     }
   }
 
-  match(pathname: any) {
+  match(pathname: string) {
     return pathname === this.pathname;
   }
 
@@ -37,7 +37,7 @@ export class Route {
     if (!this.block) {
       this.block = new this.blockClass(this.tag);
 
-      renderComponent(this.props.rootQuery, this.block.getContent());
+      renderComponent(this.props.rootQuery, this.block?.getContent());
 
       return;
     }

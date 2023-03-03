@@ -1,12 +1,12 @@
 import { Route } from './';
 
 class Router {
-  static instance: any;
+  static instance: Router;
 
   routes: any
-  history: any
-  _currentRoute: any
-  _rootQuery: any
+  history: History
+  _currentRoute: Route | null
+  _rootQuery: string
 
   constructor(rootQuery: any) {
     if (Router.instance) {
@@ -21,7 +21,7 @@ class Router {
     Router.instance = this;
   }
 
-  use(pathname: any, block: any, tag: string) {
+  use(pathname: string, block: any, tag: string) {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery}, tag);
     this.routes.push(route);
     return this;
@@ -37,7 +37,7 @@ class Router {
     this._onRoute(window.location.pathname);
   }
 
-  _onRoute(pathname: any) {
+  _onRoute(pathname: string) {
     const route = this.getRoute(pathname);
 
     if (!route) {
@@ -51,7 +51,7 @@ class Router {
     route.render(route, pathname);
   }
 
-  go(pathname: any) {
+  go(pathname: string) {
     this.history.pushState({}, "", pathname);
     this._onRoute(pathname);
   }
@@ -64,7 +64,7 @@ class Router {
     this.history.forward()
   }
 
-  getRoute(pathname: any) {
+  getRoute(pathname: string) {
     return this.routes.find((route: any) => route.match(pathname));
   }
 }

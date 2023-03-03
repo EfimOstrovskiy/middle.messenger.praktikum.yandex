@@ -1,7 +1,7 @@
 import * as styles from './SignIn.module.scss';
 
 const template = `
-  <div class="${styles.Root}">
+  <div class="${styles.root}">
     {#auth#}
   </div>
 `;

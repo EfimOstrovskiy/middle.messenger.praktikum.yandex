@@ -1,4 +1,4 @@
-.Root {
+.root {
   padding: 50px 30px 30px 30px;
   display: flex;
   flex-direction: column;
@@ -8,22 +8,22 @@
   border-radius: 12px;
 }
 
-.Title {
+.title {
   margin-bottom: 40px;
   text-align: center;
 }
 
-.Form {
+.form {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.Fields {
+.fields {
   margin-bottom: auto;
 }
 
-.Control {
+.control {
   margin-top: 50px;
   display: flex;
   flex-direction: column;

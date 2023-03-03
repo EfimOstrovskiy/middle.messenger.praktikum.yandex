@@ -3,37 +3,43 @@ import * as styles from './Main.module.scss';
 import { compileComponent, Component } from '../../utils';
 import { connect } from '../../utils/Store/Connect';
 import { router } from '../../utils/Router';
+import { declination } from '../../utils/helpers/declination';
 import template from './Main';
 import ChatList from '../../components/block/ChatList';
 import Button from '../../components/core/Button';
 import Modal from '../../components/core/Modal';
 import CreateChat from '../../components/block/CreateChat';
 import Message from '../../components/block/Message';
+import SearchChat from '../../components/block/SearchChat';
 
 import ARROW_ICON from '../../../public/images/icons/arrow.svg';
 
-
 interface IMain {
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   chats?: Record<string, any>;
   activeChat?: Record<string, any>;
-  modalCreate?: any;
-  message?: any;
+  modalCreate?: Modal;
+  message?: Component | string;
   chatsList?: ChatList[];
   inProfile?: Button;
-  createChat?: Button
+  createChat?: Button;
+  searchChat?: SearchChat
 }
 
 class Main extends Component<IMain> {
   constructor(tag: string, props: IMain = {}) {
     const modalCreate = new Modal({
-      content: new CreateChat()
+      content: new CreateChat({
+        modalClose: () => {
+          modalCreate.hide();
+        }
+      })
     });
     modalCreate.hide();
 
     const createChat = new Button({
-      className: styles.Select,
-      value: `<span class="${styles.SelectText}">Создать чат</span>`,
+      className: styles.select,
+      value: `<span class="${styles.selectText}">Создать чат</span>`,
       theme: 'transparent',
       events: {
         click: () => modalCreate.show()
@@ -41,9 +47,9 @@ class Main extends Component<IMain> {
     });
 
     const inProfile = new Button({
-      className: styles.Select,
+      className: styles.select,
       value: `
-        <span class="${styles.SelectText}">Профиль</span>
+        <span class="${styles.selectText}">Профиль</span>
         <img src="${ARROW_ICON}" alt="В профиль" />
       `,
       theme: 'transparent',
@@ -62,17 +68,20 @@ class Main extends Component<IMain> {
       return new ChatList({ nameChat, lastMessage });
     });
 
-    const message = 'Выберите чат чтобы отправить сообщение'
+    const message = 'Выберите чат чтобы отправить сообщение';
+
+    const searchChat = new SearchChat();
 
     super(tag,{
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       modalCreate,
       createChat,
       inProfile,
       chatsList: !chatsList.length ? '' : chatsList,
       message,
+      searchChat,
       ...props
     });
   }
@@ -82,22 +91,31 @@ class Main extends Component<IMain> {
   }
 
   componentDidUpdate(oldProps: IMain, newProps: IMain): boolean {
-    if (oldProps['activeChat'] !== newProps['activeChat']) {
-      this.children.message = new Message('div',{
-        accessChat: newProps['activeChat'],
-      });
-    }
-    if (oldProps['chats'] !== newProps['chats']) {
-      if (Array.isArray(newProps['chats'])) {
-        const chatListInit = newProps['chats'].map((chat: Record<string, any>) => {
-          const { title, last_message } = chat;
-          return { nameChat: title, lastMessage: last_message ? last_message.content : 'Нет сообщений' };
-        });
+    if (newProps['activeChat'] && newProps['chats']) {
+      if (oldProps['activeChat'] !== newProps['activeChat']) {
+        const countUser = newProps['activeChat']?.users.length;
 
-        this.children.chatsList = chatListInit.map((chat: Record<string, any>) => {
-          const { nameChat, lastMessage } = chat
-          return new ChatList({ nameChat, lastMessage });
+        this.children.message = new Message('div',{
+          accessChat: newProps['activeChat'],
+          countUser: `${countUser} ${declination(countUser, ['участник', 'участника', 'участников'])}`
         });
+      }
+
+      if (oldProps['chats'] !== newProps['chats']) {
+        if (Array.isArray(newProps['chats'])) {
+          const chatListInit = newProps['chats'].map((chat: Record<string, any>) => {
+            const { title, last_message } = chat;
+            return {
+              nameChat: title,
+              lastMessage:  last_message ? last_message.content : 'Нет сообщений'
+            };
+          });
+
+          this.children.chatsList = chatListInit.map((chat: Record<string, any>) => {
+            const { nameChat, lastMessage } = chat
+            return new ChatList({ nameChat, lastMessage });
+          });
+        }
       }
     }
 
@@ -110,6 +128,7 @@ class Main extends Component<IMain> {
       modalCreate,
       inProfile,
       chatsList,
+      searchChat
     } = this.props;
 
     return this.compile(this.templateNode, {
@@ -118,14 +137,15 @@ class Main extends Component<IMain> {
       modalCreate,
       inProfile,
       chatsList,
+      searchChat
     })
   }
 }
 
 const mapStateToProps = (state: Record<string, any>) => {
   return {
-    chats: state.chats || {},
-    activeChat: state.activeChat || {}
+    chats: state.chats || null,
+    activeChat: state.activeChat || null,
   }
 }
 

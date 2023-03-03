@@ -1,6 +1,6 @@
-import login from '../../../api/methods/login';
-import getUserData from '../../../api/methods/getUserData';
-import getChat from '../../../api/methods/getChat';
+import { login } from '../../../api/methods/login';
+import { getUserData } from '../../../api/methods/getUserData';
+import { getChat } from '../../../api/methods/getChat';
 import { Store } from '../Store';
 
 export async function userLogin(data: Record<string, any>) {

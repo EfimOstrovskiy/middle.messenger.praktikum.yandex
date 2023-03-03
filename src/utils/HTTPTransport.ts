@@ -1,9 +1,9 @@
-const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
-};
+enum METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
 
 function getKey(key: string, parentKey?: string) {
   return parentKey ? `${parentKey}[${key}]` : key;
@@ -24,7 +24,7 @@ function getParams(data: Record<string, any> | [], parentKey?: string) {
 }
 
 function queryStringify(data: Record<string, any>) {
-  return getParams(data).map(arr => arr.join('=')).join('&');
+  return `?${getParams(data).map(arr => arr.join('=')).join('&')}`;
 }
 
 class HTTPTransport {

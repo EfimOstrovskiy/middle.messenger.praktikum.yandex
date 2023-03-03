@@ -15,7 +15,7 @@ interface IModalProps {
 class Modal extends Component<IModalProps> {
   constructor(props: IModalProps) {
     const close = new Button({
-      className: styles.Close,
+      className: styles.close,
       value: `<img src="${CLOSE_ICON}" alt="Закрыть окно" />`,
       theme: 'transparent',
       events: {
@@ -27,7 +27,7 @@ class Modal extends Component<IModalProps> {
 
     super('div', {
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       close,
       ...props

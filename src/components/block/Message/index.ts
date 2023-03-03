@@ -14,16 +14,18 @@ import BACK_ICON from '../../../../public/images/icons/back.svg';
 
 interface IMessageProps {
   accessChat: Record<string, any>;
-  message?: Record<string, any>[];
-  user?: Record<string, any>;
-  attr?: Record<string, any>;
+  message?: Record<string, string | number | null> | Record<string, string | number | null>[];
+  user?: Record<string, string | number | null>;
+  attr?: Record<string, string | number>;
   nameChat?: string;
-  dialog?: any;
+  dialog?: string | string[];
   selectMedia?: Button;
   sendMessage?: Button;
   addUser?: Button;
   removeUser?: Button;
-  modalToggleUser?: Modal
+  modalToggleUser?: Modal;
+  countUser: string;
+  events?: Record<string, (event: Event) => void>
 }
 
 class Message extends Component<IMessageProps> {
@@ -36,13 +38,12 @@ class Message extends Component<IMessageProps> {
       content: new ToggleUser({
         state: '',
         title: '',
-        chatId: accessChat.chatId
       })
     });
     modalToggleUser.hide();
 
     const addUser = new Button({
-      className: styles.ToggleUser,
+      className: styles.toggleUser,
       value: 'Добавить пользователя',
       theme: 'transparent',
       events: {
@@ -51,7 +52,6 @@ class Message extends Component<IMessageProps> {
             content: new ToggleUser({
               state: 'add',
               title: 'Добавить пользователя',
-              chatId: accessChat.chatId
             })
           });
           modalToggleUser.show();
@@ -60,7 +60,7 @@ class Message extends Component<IMessageProps> {
     });
 
     const removeUser = new Button({
-      className: styles.ToggleUser,
+      className: styles.toggleUser,
       value: 'Удалить пользователя',
       theme: 'transparent',
       events: {
@@ -69,7 +69,6 @@ class Message extends Component<IMessageProps> {
             content: new ToggleUser({
               state: 'delete',
               title: 'Удалить пользователя',
-              chatId: accessChat.chatId
             })
           });
           modalToggleUser.show();
@@ -78,35 +77,47 @@ class Message extends Component<IMessageProps> {
     });
 
     const selectMedia = new Button({
-      className: cn(styles.Button, styles.SelectMedia),
+      className: cn(styles.button, styles.selectMedia),
       value: '+'
     });
 
     const sendMessage = new Button({
-      className: cn(styles.Button, styles.SendMessage),
+      className: cn(styles.button, styles.sendMessage),
       value: `<img src="${BACK_ICON}" alt="Отправить сообщение" />`,
       events: {
         click: (event) => {
           event.preventDefault();
-          const target = event.target as HTMLElement;
+          const target = event.target as HTMLFormElement;
           const form = target.closest('form');
-          const input = form?.querySelector('input');
+          const input: HTMLInputElement | null | undefined = form?.querySelector(`.${styles.field}`);
 
-          handleSubmit(target, 'base') && socket && socket.send(JSON.stringify({
-            content: SerializeForm(form, 'message').message,
+          handleSubmit(target, 'base') && socket?.send(JSON.stringify({
+            content: SerializeForm(form!, 'message').message,
             type: 'message',
           }));
 
-          if (input) {
-            input.value = ''
-          }
+          input!.value = ''
         }
       }
     });
 
     super(tag, {
       attr: {
-        class: styles.Root
+        class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+          const input: HTMLInputElement | null = target.querySelector(`.${styles.field}`);
+
+          handleSubmit(target, 'base') && socket?.send(JSON.stringify({
+            content: SerializeForm(target, 'message').message,
+            type: 'message',
+          }));
+
+          input!.value = ''
+        }
       },
       selectMedia,
       sendMessage,
@@ -122,43 +133,41 @@ class Message extends Component<IMessageProps> {
   }
 
   private viwLastMessage() {
-    const dialog = document.querySelector(`.${styles.Dialog}`);
+    const dialog = document.querySelector(`.${styles.dialog}`);
     if (dialog) {
       dialog.scrollTop = dialog.scrollHeight;
     }
   }
 
-  private messageFormatter(message: any, user: any) {
-    if (!message) {
+  private messageFormatter(message?: IMessageProps['message'], user?: IMessageProps['user']) {
+    if (!message || !user) {
       return;
     }
 
     if (Array.isArray(message)) {
       return message.map((item) => {
-        const className = user?.id === item.user_id ? styles.Right : styles.Left;
-        return `<div class="${cn(styles.DialogMessage, className)}">${item.content}</div>`
+        const className = user?.id === item.user_id ? styles.right : styles.left;
+        return `<div class="${cn(styles.dialogMessage, className)}">${item.content}</div>`
       }).reverse();
     } else {
-      const className = user?.id === message.user_id ? styles.Right : styles.Left;
-      return `<div class="${cn(styles.DialogMessage, className)}">${message.content}</div>`
+      const className = user?.id === message.user_id ? styles.right : styles.left;
+      return `<div class="${cn(styles.dialogMessage, className)}">${message.content}</div>`
     }
   }
 
   componentDidUpdate(oldProps: IMessageProps, newProps: IMessageProps) {
     if (oldProps['message'] !== newProps['message']) {
       const dialog = this.messageFormatter(newProps['message'], newProps['user']);
-      if (dialog) {
-        if (Array.isArray(dialog)) {
-          this.props.dialog = dialog;
-        } else {
-          this.props.dialog.push(dialog);
-        }
+      if (Array.isArray(dialog) && dialog) {
+        this.props.dialog = dialog;
+      } else if (dialog) {
+        Array.isArray(this.props.dialog) && this.props.dialog.push(dialog);
       }
     }
 
     this.viwLastMessage();
 
-    return oldProps['message'] !== newProps['message']
+    return oldProps !== newProps
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {
@@ -172,7 +181,8 @@ class Message extends Component<IMessageProps> {
       dialog,
       addUser,
       removeUser,
-      modalToggleUser
+      modalToggleUser,
+      countUser
     } = this.props;
 
     return this.compile(this.templateNode, {
@@ -182,7 +192,8 @@ class Message extends Component<IMessageProps> {
       dialog,
       addUser,
       removeUser,
-      modalToggleUser
+      modalToggleUser,
+      countUser
     });
   }
 }
@@ -190,7 +201,7 @@ class Message extends Component<IMessageProps> {
 const mapStateToProps = (state: Record<string, any>) => {
   return {
     message: state.message || null,
-    user: state.user || {}
+    user: state.user || null
   };
 }
 

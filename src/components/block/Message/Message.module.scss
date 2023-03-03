@@ -1,11 +1,11 @@
-.Root {
+.root {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 
-  .Button {
+  .button {
     padding: 0;
     display: flex;
     justify-content: center;
@@ -15,26 +15,26 @@
     border-radius: 50%;
   }
 
-  .ToggleUser {
+  .toggleUser {
     margin-right: 16px;
     padding: 0;
     font-size: 14px;
   }
 
-  .Delete {
+  .delete {
     padding: 0;
     font-size: 14px;
     color: var(--color-red-2);
   }
 }
 
-.Panel {
+.panel {
   padding: 11px 0;
   display: flex;
   align-items: center;
 }
 
-.Avatar {
+.avatar {
   margin-right: 10px;
   width: 34px;
   height: 34px;
@@ -42,34 +42,43 @@
   border-radius: 50%;
 }
 
-.Name {
+.name {
+  margin-right: 10px;
   font-weight: 600;
   font-size: 14px;
   line-height: 14px;
 }
 
-.Header {
+.count {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--color-grey-5);
+}
+
+.header {
   border-bottom: 1px solid var(--color-grey-3);
 }
 
-.Control {
+.control {
   margin-left: auto;
   display: flex;
   align-items: center;
 }
 
-.Dialog {
+.dialog {
   overflow: auto;
   padding: 10px 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   height: 100%;
 }
 
-.DialogMessage {
+.dialogMessage {
   margin-bottom: 16px;
   padding: 10px;
   width: max-content;
+  max-width: 500px;
   border-radius: 10px;
 
   &:last-child {
@@ -77,20 +86,20 @@
   }
 }
 
-.Left {
+.left {
   background: var(--color-red-3);
 }
 
-.Right {
+.right {
   margin-left: auto;
   background: var(--color-blue-3);
 }
 
-.Form {
+.form {
   border-top: 1px solid var(--color-grey-3);
 }
 
-.Field {
+.field {
   margin-right: 10px;
   padding: 10px 20px;
   flex-grow: 1;
@@ -99,11 +108,11 @@
   border-radius: 30px;
 }
 
-.SelectMedia {
+.selectMedia {
   margin-right: 10px;
 }
 
-.SendMessage {
+.sendMessage {
   img {
     transform: rotate(180deg);
   }

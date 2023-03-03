@@ -1,7 +1,5 @@
 import { sendApiRequest } from '../apiService';
 
-function updateUserData(data: Record<string, any>) {
+export function updateUserData(data: Record<string, string | number>) {
   return sendApiRequest('/user/profile', 'PUT', data);
 }
-
-export default updateUserData;

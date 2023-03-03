@@ -7,10 +7,10 @@ import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
 import { userLogin } from '../../utils/Store/actions/userLogin';
-import { handleBlur, handleFocus, handleSubmit, SerializeForm } from '../../utils/helpers';
+import { handleBlur, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ILoginProps {
-  attr?: Record<string, any>;
+  attr?: Record<string, string | number>;
   auth?: FormAuth
 }
 
@@ -29,15 +29,11 @@ class Login extends Component<ILoginProps> {
       const { name, label } = field;
 
       return new Input({
-        className: styles.Input,
+        className: styles.input,
         placeholder: label,
         name,
         value: '',
         events: {
-          focusin: (event) => {
-            const input = event.target as HTMLInputElement
-            handleFocus(input, 'login')
-          },
           focusout: (event) => {
             const input = event.target as HTMLInputElement
             handleBlur(input, 'login');
@@ -45,6 +41,7 @@ class Login extends Component<ILoginProps> {
         }
       });
     });
+
     const buttons = buttonsInit.map((button) => {
       const { className, value, theme } = button;
 
@@ -61,7 +58,7 @@ class Login extends Component<ILoginProps> {
               const fieldsName = fieldsInit.map(field => field.name);
 
               handleSubmit(target, 'signIn')
-                && userLogin(SerializeForm(form, fieldsName))
+                && userLogin(SerializeForm(form!, fieldsName))
                 .then(status => status === 200 && router.go('/'));
             }
           }
@@ -77,11 +74,12 @@ class Login extends Component<ILoginProps> {
         }
       });
     });
+
     const auth = new FormAuth({ title: 'Вход', fields, buttons });
 
     super('div',{
       attr: {
-        class: styles.Root
+        class: styles.root
       },
       auth,
       ...props

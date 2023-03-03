@@ -1,21 +1,21 @@
-.Root{
-  &.Auth {
+.root{
+  &.auth {
     display: flex;
     flex-direction: column;
 
-    .Label {
+    .label {
       font-size: 13px;
       line-height: 13px;
       color: var(--color-grey-5);
     }
 
-    .Input {
+    .input {
       padding: 7px 0;
       border: none;
       border-bottom: 1px solid var(--color-blue-1);
     }
 
-    .Error {
+    .error {
       margin-top: 10px;
       font-size: 12px;
       line-height: 14px;
@@ -23,7 +23,7 @@
     }
   }
 
-  &.Profile {
+  &.profile {
     position: relative;
     padding: 20px 0;
     display: flex;
@@ -35,13 +35,13 @@
       border-bottom: none;
     }
 
-    .Label {
+    .label {
       font-size: 14px;
       line-height: 14px;
       width: 100%;
     }
 
-    .Input {
+    .input {
       width: 100%;
       border: none;
       background: transparent;
@@ -53,7 +53,7 @@
       }
     }
 
-    .Error {
+    .error {
       position: absolute;
       bottom: 5px;
       font-size: 12px;

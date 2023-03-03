@@ -1,4 +1,4 @@
-import signIn from '../../../api/methods/signIn';
+import { signIn } from '../../../api/methods/signIn';
 
 export async function userSignIn(data: Record<string, any>) {
   const result: any = await signIn(data);
