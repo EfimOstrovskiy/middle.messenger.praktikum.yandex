@@ -61,6 +61,13 @@ class UserDataList extends Component<IUserDataListProps> {
             value,
             readonly: newProps['readonly'],
             theme: 'profile',
+            events: {
+              focusout: (event) => {
+                const target = event.target as HTMLInputElement;
+
+                handleBlur(target, 'base');
+              }
+            }
           });
         });
       }

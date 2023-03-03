@@ -59,7 +59,8 @@ class Login extends Component<ILoginProps> {
 
               handleSubmit(target, 'signIn')
                 && userLogin(SerializeForm(form!, fieldsName))
-                .then(status => status === 200 && router.go('/'));
+                .then(status => status === 200 && router.go('/'))
+                .catch(error => console.error(error));
             }
           }
         });

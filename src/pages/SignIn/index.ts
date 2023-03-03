@@ -62,7 +62,8 @@ class SingIn extends Component<ISingInProps> {
 
               handleSubmit(target, 'signIn')
                 && userSignIn(SerializeForm(form!, fieldsName))
-                .then(status => status === 200 && router.go('/login'));
+                .then(status => status === 200 && router.go('/login'))
+                .catch(error => console.error(error));
             }
           }
         });

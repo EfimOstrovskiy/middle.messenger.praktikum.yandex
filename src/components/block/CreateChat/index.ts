@@ -43,7 +43,7 @@ class CreateChat extends Component<ICreateChatProps> {
           if (handleSubmit(target, 'signIn')) {
             createChat(SerializeForm(form!, ['login', 'title'])).then(status => {
               return status === 200 && props.modalClose()
-            })
+            }).catch(error => console.error(error));
           }
         }
       }

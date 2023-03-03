@@ -9,9 +9,7 @@ export type ValidationModeType = 'login' | 'signIn' | 'base';
 export const Validation = (field: HTMLInputElement, mode: ValidationModeType) => {
   const nameField = field.name;
   const valueField = field.value;
-  const regexp = new RegExp(nameField === 'first_name' || nameField === 'second_name'
-    ? REGEXP_SETTING.name
-    : REGEXP_SETTING[nameField]);
+  const regexp = new RegExp(REGEXP_SETTING[nameField]);
 
   const messageError = mode === 'login'
     ? LOGIN_MESSAGE_ERROR
@@ -26,9 +24,7 @@ export const Validation = (field: HTMLInputElement, mode: ValidationModeType) =>
 
   if (!regexp.test(valueField)) {
     verified.success = false;
-    verified.messageError = nameField === 'first_name' || nameField === 'second_name'
-      ? messageError.name
-      : messageError[nameField];
+    verified.messageError = messageError[nameField];
   }
 
   return verified;

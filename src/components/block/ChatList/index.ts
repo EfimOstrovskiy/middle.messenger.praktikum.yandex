@@ -35,7 +35,7 @@ class ChatList extends Component<IChatListProps> {
             titles.forEach(title => {
               title?.parentElement?.parentElement?.classList.remove('hide');
             });
-          });
+          }).catch(error => console.error(error));
         }
       },
       ...props

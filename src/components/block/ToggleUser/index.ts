@@ -36,7 +36,8 @@ class ToggleUser extends Component<IToggleUserProps> {
           const form = target.closest('form');
 
           handleSubmit(target, 'signIn')
-          && addUser(SerializeForm(form!, 'login').login);
+          && addUser(SerializeForm(form!, 'login').login)
+            .catch(error => console.error(error));
         }
       }
     });

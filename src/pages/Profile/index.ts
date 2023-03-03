@@ -5,7 +5,7 @@ import { router } from '../../utils/Router';
 import { connect } from '../../utils/Store/Connect';
 import { userUpdate } from '../../utils/Store/actions/userUpdate';
 import { userLogout } from '../../utils/Store/actions/userLogout';
-import { updateUserPassword } from '../../api/methods/updateUserPassword';
+import { updatePassword } from '../../utils/Store/actions/updatePassword';
 import cn from 'classnames';
 import template from './Profile';
 import UserDataList from '../../components/block/UserDataList';
@@ -67,11 +67,13 @@ class Profile extends Component<IProfileProps> {
           let fieldsName = userData.props.itemsInit.map(field => field.name);
 
           if (viewChange === 'data') {
-            handleSubmit(target, 'base') && userUpdate(SerializeForm(form!, fieldsName));
+            handleSubmit(target, 'base') && userUpdate(SerializeForm(form!, fieldsName))
+              .catch(error => console.error(error));
           }
 
           if (viewChange === 'password') {
-            handleSubmit(target, 'base') && updateUserPassword(SerializeForm(form!, fieldsName));
+            handleSubmit(target, 'base') && updatePassword(SerializeForm(form!, fieldsName))
+              .catch(error => console.error(error));
           }
 
           userData.setProps({
@@ -129,7 +131,8 @@ class Profile extends Component<IProfileProps> {
       theme: 'transparent',
       events: {
         click: () => {
-          userLogout().then(status => status === 200 && router.go('/login'));
+          userLogout().then(status => status === 200 && router.go('/login'))
+            .catch(error => console.error(error));
         }
       }
     });
