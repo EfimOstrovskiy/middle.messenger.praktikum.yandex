@@ -17,10 +17,10 @@ export const SerializeForm = (form: HTMLFormElement, fieldsName: string | string
 
   if (Array.isArray(fieldsName)) {
     fieldsName.forEach((name) => {
-      result[name] = formatterValue(data.get(name));
+      result[name] = data.get(name) ? formatterValue(data.get(name)) : null;
     });
   } else {
-    result[fieldsName] = formatterValue(data.get(fieldsName));
+    result[fieldsName] = data.get(fieldsName) ? formatterValue(data.get(fieldsName)) : null;
   }
 
   return result;

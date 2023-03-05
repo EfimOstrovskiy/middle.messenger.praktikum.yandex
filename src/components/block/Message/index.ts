@@ -99,13 +99,14 @@ class Message extends Component<IMessageProps> {
           event.preventDefault();
           const target = event.target as HTMLFormElement;
           const input: HTMLInputElement | null = target.querySelector(`.${styles.field}`);
+          const message = SerializeForm(target, 'message').message
 
-          handleSubmit(target, 'base') && socket?.send(JSON.stringify({
-            content: SerializeForm(target, 'message').message,
+          handleSubmit(target, 'base') && message && socket?.send(JSON.stringify({
+            content: message,
             type: 'message',
           }));
 
-          input!.value = ''
+          input ? input.value = '' : null;
         }
       },
       selectMedia,

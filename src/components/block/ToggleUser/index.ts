@@ -47,13 +47,14 @@ class ToggleUser extends Component<IToggleUserProps> {
         submit: (event) => {
           event.preventDefault();
           const target = event.target as HTMLFormElement;
+          const login = SerializeForm(target, 'login').login;
 
-          if (handleSubmit(target, 'signIn')) {
+          if (handleSubmit(target, 'signIn') && login) {
             if (props.state === 'add') {
-              addUser(SerializeForm(target, 'login').login)
+              addUser(login)
                 .catch(error => console.error(error));
             } else {
-              removeUser(SerializeForm(target, 'login').login)
+              removeUser(login)
                 .catch(error => console.error(error));
             }
           }
