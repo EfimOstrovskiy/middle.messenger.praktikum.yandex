@@ -11,7 +11,8 @@ import { handleBlur, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ILoginProps {
   attr?: Record<string, string | number>;
-  auth?: FormAuth
+  auth?: FormAuth;
+  events?: Record<string, (event: Event) => void>
 }
 
 const fieldsInit = [
@@ -50,19 +51,7 @@ class Login extends Component<ILoginProps> {
           className,
           value,
           theme,
-          events: {
-            click: (event) => {
-              event.preventDefault();
-              const target = event.target as HTMLElement;
-              const form = target.closest('form');
-              const fieldsName = fieldsInit.map(field => field.name);
-
-              handleSubmit(target, 'signIn')
-                && userLogin(SerializeForm(form!, fieldsName))
-                .then(status => status === 200 && router.go('/'))
-                .catch(error => console.error(error));
-            }
-          }
+          type: 'submit'
         });
       }
 
@@ -70,6 +59,7 @@ class Login extends Component<ILoginProps> {
         className,
         value,
         theme,
+        type: 'button',
         events: {
           click: () => router.go('/sign_in')
         }
@@ -81,6 +71,18 @@ class Login extends Component<ILoginProps> {
     super('div',{
       attr: {
         class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+          const fieldsName = fieldsInit.map(field => field.name);
+
+          handleSubmit(target, 'signIn')
+          && userLogin(SerializeForm(target!, fieldsName))
+            .then(status => status === 200 && router.go('/'))
+            .catch(error => console.error(error));
+        }
       },
       auth,
       ...props

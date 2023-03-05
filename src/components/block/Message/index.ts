@@ -46,6 +46,7 @@ class Message extends Component<IMessageProps> {
       className: styles.toggleUser,
       value: 'Добавить пользователя',
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           modalToggleUser.setProps({
@@ -63,6 +64,7 @@ class Message extends Component<IMessageProps> {
       className: styles.toggleUser,
       value: 'Удалить пользователя',
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           modalToggleUser.setProps({
@@ -78,27 +80,14 @@ class Message extends Component<IMessageProps> {
 
     const selectMedia = new Button({
       className: cn(styles.button, styles.selectMedia),
-      value: '+'
+      value: '+',
+      type: 'button',
     });
 
     const sendMessage = new Button({
       className: cn(styles.button, styles.sendMessage),
       value: `<img src="${BACK_ICON}" alt="Отправить сообщение" />`,
-      events: {
-        click: (event) => {
-          event.preventDefault();
-          const target = event.target as HTMLFormElement;
-          const form = target.closest('form');
-          const input: HTMLInputElement | null | undefined = form?.querySelector(`.${styles.field}`);
-
-          handleSubmit(target, 'base') && socket?.send(JSON.stringify({
-            content: SerializeForm(form!, 'message').message,
-            type: 'message',
-          }));
-
-          input!.value = ''
-        }
-      }
+      type: 'submit',
     });
 
     super(tag, {

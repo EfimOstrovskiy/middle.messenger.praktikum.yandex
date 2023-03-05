@@ -18,6 +18,7 @@ class Modal extends Component<IModalProps> {
       className: styles.close,
       value: `<img src="${CLOSE_ICON}" alt="Закрыть окно" />`,
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           this.hide();

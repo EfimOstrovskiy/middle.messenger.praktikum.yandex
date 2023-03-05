@@ -7,6 +7,7 @@ import cn from 'classnames';
 interface IButtonProps {
   className: string;
   value: string | HTMLElement;
+  type: string;
   theme?: string;
   attr?: Record<string, string | number>;
   events?: Record<string, (event: Event) => void>
@@ -22,7 +23,7 @@ class Button extends Component<IButtonProps> {
 
     super('button', {
       attr: {
-        type: 'Button',
+        type: props.type,
         class: rootClassName,
       },
       ...props });

@@ -23,6 +23,7 @@ interface IProfileProps {
   changeData?: Button;
   changePassword?: Button;
   exit?: Button;
+  events?: Record<string, (event: Event) => void>
 }
 
 const items = [
@@ -50,6 +51,7 @@ class Profile extends Component<IProfileProps> {
     const backProfile = new Button({
       className: styles.cancel,
       value: `<img src="${BACK_ICON}" alt="Назад к чатам" />`,
+      type: 'button',
       events: {
         click: () => router.go('/')
       }
@@ -60,30 +62,7 @@ class Profile extends Component<IProfileProps> {
     const saveData = new Button({
       className: styles.save,
       value: 'Сохранить',
-      events: {
-        click: (event) =>{event.preventDefault();
-          const target = event.target as HTMLElement;
-          const form = target.closest('form');
-          let fieldsName = userData.props.itemsInit.map(field => field.name);
-
-          if (viewChange === 'data') {
-            handleSubmit(target, 'base') && userUpdate(SerializeForm(form!, fieldsName))
-              .catch(error => console.error(error));
-          }
-
-          if (viewChange === 'password') {
-            handleSubmit(target, 'base') && updatePassword(SerializeForm(form!, fieldsName))
-              .catch(error => console.error(error));
-          }
-
-          userData.setProps({
-            itemsInit: itemsInit,
-            readonly: 'readonly'
-          });
-
-          this.viewControl();
-        }
-      }
+      type: 'submit'
     })
     saveData.hide();
 
@@ -91,6 +70,7 @@ class Profile extends Component<IProfileProps> {
       className: styles.button,
       value: 'Изменить данные',
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           userData.setProps({
@@ -108,6 +88,7 @@ class Profile extends Component<IProfileProps> {
       className: styles.button,
       value: 'Изменить пароль',
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           userData.setProps({
@@ -129,6 +110,7 @@ class Profile extends Component<IProfileProps> {
       className: cn(styles.exit, styles.button),
       value: 'Выйти',
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => {
           userLogout().then(status => status === 200 && router.go('/login'))
@@ -140,6 +122,30 @@ class Profile extends Component<IProfileProps> {
     super(tag,{
       attr: {
         class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+          let fieldsName = userData.props.itemsInit.map(field => field.name);
+
+          if (viewChange === 'data') {
+            handleSubmit(target, 'base') && userUpdate(SerializeForm(target, fieldsName))
+              .catch(error => console.error(error));
+          }
+
+          if (viewChange === 'password') {
+            handleSubmit(target, 'base') && updatePassword(SerializeForm(target, fieldsName))
+              .catch(error => console.error(error));
+          }
+
+          userData.setProps({
+            itemsInit: itemsInit,
+            readonly: 'readonly'
+          });
+
+          this.viewControl();
+        }
       },
       backProfile,
       userData,

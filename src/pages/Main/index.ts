@@ -41,6 +41,7 @@ class Main extends Component<IMain> {
       className: styles.select,
       value: `<span class="${styles.selectText}">Создать чат</span>`,
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => modalCreate.show()
       }
@@ -53,6 +54,7 @@ class Main extends Component<IMain> {
         <img src="${ARROW_ICON}" alt="В профиль" />
       `,
       theme: 'transparent',
+      type: 'button',
       events: {
         click: () => router.go('/profile')
       }
@@ -91,31 +93,29 @@ class Main extends Component<IMain> {
   }
 
   componentDidUpdate(oldProps: IMain, newProps: IMain): boolean {
-    if (newProps['activeChat'] && newProps['chats']) {
-      if (oldProps['activeChat'] !== newProps['activeChat']) {
-        const countUser = newProps['activeChat']?.users.length;
+    if (oldProps['activeChat'] !== newProps['activeChat'] && newProps['activeChat']) {
+      const countUser = newProps['activeChat']?.users.length;
 
-        this.children.message = new Message('div',{
-          accessChat: newProps['activeChat'],
-          countUser: `${countUser} ${declination(countUser, ['участник', 'участника', 'участников'])}`
+      this.children.message = new Message('div',{
+        accessChat: newProps['activeChat'],
+        countUser: `${countUser} ${declination(countUser, ['участник', 'участника', 'участников'])}`
+      });
+    }
+
+    if (oldProps['chats'] !== newProps['chats'] && newProps['chats']) {
+      if (Array.isArray(newProps['chats'])) {
+        const chatListInit = newProps['chats'].map((chat: Record<string, any>) => {
+          const { title, last_message } = chat;
+          return {
+            nameChat: title,
+            lastMessage:  last_message ? last_message.content : 'Нет сообщений'
+          };
         });
-      }
 
-      if (oldProps['chats'] !== newProps['chats']) {
-        if (Array.isArray(newProps['chats'])) {
-          const chatListInit = newProps['chats'].map((chat: Record<string, any>) => {
-            const { title, last_message } = chat;
-            return {
-              nameChat: title,
-              lastMessage:  last_message ? last_message.content : 'Нет сообщений'
-            };
-          });
-
-          this.children.chatsList = chatListInit.map((chat: Record<string, any>) => {
-            const { nameChat, lastMessage } = chat
-            return new ChatList({ nameChat, lastMessage });
-          });
-        }
+        this.children.chatsList = chatListInit.map((chat: Record<string, any>) => {
+          const { nameChat, lastMessage } = chat
+          return new ChatList({ nameChat, lastMessage });
+        });
       }
     }
 

@@ -13,6 +13,7 @@ interface ICreateChatProps {
   nameChat?: Input;
   create?: Button;
   modalClose: () => void;
+  events?: Record<string, (event: Event) => void>
 }
 
 class CreateChat extends Component<ICreateChatProps> {
@@ -34,24 +35,24 @@ class CreateChat extends Component<ICreateChatProps> {
     const create = new Button({
       className: '',
       value: 'Создать',
-      events: {
-        click: (event) => {
-          event.preventDefault();
-          const target = event.target as HTMLElement;
-          const form = target.closest('form');
-
-          if (handleSubmit(target, 'signIn')) {
-            createChat(SerializeForm(form!, ['login', 'title'])).then(status => {
-              return status === 200 && props.modalClose()
-            }).catch(error => console.error(error));
-          }
-        }
-      }
+      type: 'submit'
     });
 
     super('form', {
       attr: {
         class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+
+          if (handleSubmit(target, 'signIn')) {
+            createChat(SerializeForm(target, ['login', 'title'])).then(status => {
+              return status === 200 && props.modalClose()
+            }).catch(error => console.error(error));
+          }
+        }
       },
       searchUser,
       nameChat,

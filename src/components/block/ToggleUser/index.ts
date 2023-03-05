@@ -14,7 +14,8 @@ interface IToggleUserProps {
   state: string;
   nameUser?: Input;
   inUser?: Button;
-  deleteUser?: Button
+  deleteUser?: Button;
+  events?: Record<string, (event: Event) => void>
 }
 
 class ToggleUser extends Component<IToggleUserProps> {
@@ -29,37 +30,34 @@ class ToggleUser extends Component<IToggleUserProps> {
     const inUser = new Button({
       className: '',
       value: 'Добавить',
-      events: {
-        click: (event) => {
-          event.preventDefault();
-          const target = event.target as HTMLFormElement;
-          const form = target.closest('form');
-
-          handleSubmit(target, 'signIn')
-          && addUser(SerializeForm(form!, 'login').login)
-            .catch(error => console.error(error));
-        }
-      }
+      type: 'submit'
     });
 
     const deleteUser = new Button({
       className: '',
       value: 'Удалить',
-      events: {
-        click: (event) => {
-          event.preventDefault();
-          const target = event.target as HTMLFormElement;
-          const form = target.closest('form');
-
-          handleSubmit(target, 'signIn')
-          && removeUser(SerializeForm(form!, 'login').login);
-        }
-      }
+      type: 'submit'
     });
 
     super('form', {
       attr: {
         class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+
+          if (handleSubmit(target, 'signIn')) {
+            if (props.state === 'add') {
+              addUser(SerializeForm(target, 'login').login)
+                .catch(error => console.error(error));
+            } else {
+              removeUser(SerializeForm(target, 'login').login)
+                .catch(error => console.error(error));
+            }
+          }
+        }
       },
       inUser,
       deleteUser,

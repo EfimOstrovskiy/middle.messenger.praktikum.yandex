@@ -17,6 +17,7 @@ export class Error extends Component<IErrorProps> {
       className: styles.back,
       value: 'Назад к чатам',
       theme: 'transparent',
+      type: 'button'
     });
     super('div', {
       attr: {
