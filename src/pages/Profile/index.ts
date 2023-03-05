@@ -41,11 +41,11 @@ class Profile extends Component<IProfileProps> {
 
     const itemsInit = items.map((item: any) => {
       const state = props.user;
-      if (state) {
-        return { placeholder: item.placeholder, name: item.name, value: state[item.name] };
-      } else {
-        return { placeholder: item.placeholder, name: item.name, value: '' };
-      }
+      return {
+        placeholder: item.placeholder,
+        name: item.name,
+        value: state ? state[item.name] : ''
+      };
     });
 
     const backProfile = new Button({
@@ -131,20 +131,35 @@ class Profile extends Component<IProfileProps> {
 
           if (viewChange === 'data') {
             handleSubmit(target, 'base') && userUpdate(SerializeForm(target, fieldsName))
+              .then(() => {
+                userData.setProps({
+                  readonly: 'readonly'
+                });
+
+                this.viewControl();
+              })
               .catch(error => console.error(error));
           }
 
           if (viewChange === 'password') {
             handleSubmit(target, 'base') && updatePassword(SerializeForm(target, fieldsName))
+              .then(() => {
+                userData.setProps({
+                  itemsInit: items.map((item: any) => {
+                    const state = this.props.user;
+                    return {
+                      placeholder: item.placeholder,
+                      name: item.name,
+                      value: state ? state[item.name] : ''
+                    };
+                  }),
+                  readonly: 'readonly'
+                });
+
+                this.viewControl();
+              })
               .catch(error => console.error(error));
           }
-
-          userData.setProps({
-            itemsInit: itemsInit,
-            readonly: 'readonly'
-          });
-
-          this.viewControl();
         }
       },
       backProfile,
