@@ -19,6 +19,8 @@ html,
 body {
   --color-white: #fff;
   --color-blue-1: #3369f3;
+  --color-blue-2: #e4edfd;
+  --color-blue-3: #add2ff;
   --color-grey-1: #efefef;
   --color-grey-2: #e5e5e5;
   --color-grey-3: #eaeaea;
@@ -27,6 +29,7 @@ body {
   --color-grey-6: #1e1e1e;
   --color-red-1: #ff2f2f;
   --color-red-2: #ff0000;
+  --color-red-3: #ffadad;
 
   font-family: "Inter", sans-serif;
   color: var(--color-grey-6);
@@ -60,4 +63,8 @@ h5 {
   font-size: 12px;
   line-height: 12px;
   font-weight: 500;
+}
+
+.hide {
+  display: none !important;
 }

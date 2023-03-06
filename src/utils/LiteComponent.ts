@@ -1,6 +1,5 @@
 interface ILiteComponent {
   searchProps(arg: string): null | string[];
-  isEqualProps(props: string[], args: string[]): boolean
   compileComponent(template: string): (args: null | Record<string, string | string[]>) => string;
   renderComponent(root: string, node: DocumentFragment): void
 }
@@ -26,18 +25,6 @@ class LiteComponent implements ILiteComponent {
     return props.map((prop) => {
       return prop.replace(this.clearPropsReg, '');
     });
-  }
-
-  isEqualProps(props: string[], args: string[]): boolean {
-    if (props.length !== args.length) {
-      return false
-    }
-
-    for (let i = 0; i < props.length; i++) {
-      if (props[i] !== args[i]) return false;
-    }
-
-    return true;
   }
 
   compileComponent(template: string): (args: ArgsType) => string {
@@ -67,7 +54,7 @@ class LiteComponent implements ILiteComponent {
 
   renderComponent(rootElement: string, node: DocumentFragment) {
     const root = document.getElementById(rootElement);
-    root && root.append(node);
+    root && root.replaceChildren(node);
   }
 }
 

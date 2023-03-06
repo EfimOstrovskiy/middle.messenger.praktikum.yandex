@@ -1,4 +1,4 @@
-.Root {
+.root {
   padding: 12px;
   text-align: center;
   font-size: 14px;
@@ -8,12 +8,12 @@
   cursor: pointer;
 }
 
-.Primary {
+.primary {
   background: var(--color-blue-1);
   color: var(--color-white);
 }
 
-.Transparent {
+.transparent {
   background: transparent;
   color: var(--color-blue-1);
 }

@@ -1,15 +1,30 @@
-const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
-};
+enum METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
+
+function getKey(key: string, parentKey?: string) {
+  return parentKey ? `${parentKey}[${key}]` : key;
+}
+
+function getParams(data: Record<string, any> | [], parentKey?: string) {
+  const result: [string, string][] = [];
+
+  for(const [key, value] of Object.entries(data)) {
+    if (typeof value === 'object' && value !== null) {
+      result.push(...getParams(value, getKey(key, parentKey)));
+    } else {
+      result.push([getKey(key, parentKey), encodeURIComponent(String(value))]);
+    }
+  }
+
+  return result;
+}
 
 function queryStringify(data: Record<string, any>) {
-  const keys = Object.keys(data);
-  return keys.reduce((result, key, index) => {
-    return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
-  }, '?');
+  return `?${getParams(data).map(arr => arr.join('=')).join('&')}`;
 }
 
 class HTTPTransport {
@@ -42,6 +57,7 @@ class HTTPTransport {
           ? `${url}${queryStringify(data)}`
           : url,
       );
+      xhr.withCredentials = true;
 
       Object.keys(headers).forEach(key => {
         xhr.setRequestHeader(key, headers[key]);

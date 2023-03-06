@@ -1,9 +1,5 @@
-import * as styles from './Login.module.scss';
-
 const template = `
-  <div class="${styles.Root}">
-    {#auth#}
-  </div>
+  {#auth#}
 `;
 
 export default template;

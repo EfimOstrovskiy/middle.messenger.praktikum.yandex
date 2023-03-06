@@ -1,14 +1,18 @@
 import * as styles from './SignIn.module.scss';
 
 import { compileComponent, Component } from '../../utils';
+import { router } from '../../utils/Router';
 import template from './SignIn';
 import FormAuth from '../../components/block/FormAuth';
 import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
-import { handleBlur, handleFocus, handleSubmit} from '../../utils/helpers';
+import { userSignIn } from '../../utils/Store/actions/userSignIn';
+import { handleBlur, handleSubmit, SerializeForm } from '../../utils/helpers';
 
 interface ISingInProps {
-  auth?: FormAuth
+  attr?: Record<string, string | number>;
+  auth?: FormAuth;
+  events?: Record<string, (event: Event) => void>
 }
 
 const fieldsInit = [
@@ -30,15 +34,11 @@ class SingIn extends Component<ISingInProps> {
       const { name, label } = field;
 
       return new Input({
-        className: styles.Input,
+        className: styles.input,
         placeholder: label,
         name,
+        value: '',
         events: {
-          focusin: (event) => {
-            const target = event.target as HTMLInputElement;
-
-            handleFocus(target, 'signIn');
-          },
           focusout: (event) => {
             const target = event.target as HTMLInputElement;
 
@@ -55,22 +55,41 @@ class SingIn extends Component<ISingInProps> {
           className,
           value,
           theme,
-          events: {
-            click: (event) => {
-              event.preventDefault();
-              const target = event.target as HTMLElement;
-
-              handleSubmit(target, 'signIn');
-            }
-          }
+          type: 'submit'
         });
       }
 
-      return new Button({ className, value, theme });
+      return new Button({
+        className,
+        value,
+        theme,
+        type: 'button',
+        events: {
+          click: () => router.go('/login')
+        }
+      });
     });
     const auth = new FormAuth({ title: 'Регистрация', fields, buttons });
 
-    super({ auth, ...props });
+    super('div',{
+      attr: {
+        class: styles.root
+      },
+      events: {
+        submit: (event) => {
+          event.preventDefault();
+          const target = event.target as HTMLFormElement;
+          const fieldsName = fieldsInit.map(field => field.name);
+
+          handleSubmit(target, 'signIn')
+          && userSignIn(SerializeForm(target, fieldsName))
+            .then(status => status === 200 && router.go('/login'))
+            .catch(error => console.error(error));
+        }
+      },
+      auth,
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {

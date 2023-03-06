@@ -1,12 +1,16 @@
-.Root {
-  padding: 12px 0;
+.root {
+  padding: 14px 10px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--color-grey-3);
   cursor: pointer;
 }
 
-.Icon {
+.active {
+  background: var(--color-blue-2);
+}
+
+.icon {
   margin-right: 10px;
   display: flex;
   align-items: center;
@@ -22,20 +26,20 @@
   }
 }
 
-.Description {
+.description {
   display: flex;
   flex-direction: column;
   max-width: 193px;
 }
 
-.NameChat {
+.nameChat {
   margin-bottom: 6px;
   font-weight: 600;
   font-size: 13px;
   line-height: 13px;
 }
 
-.LastMessage {
+.lastMessage {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;

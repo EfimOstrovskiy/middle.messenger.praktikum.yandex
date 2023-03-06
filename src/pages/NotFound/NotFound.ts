@@ -1,7 +1,7 @@
 import * as styles from './NotFound.module.scss';
 
 const template = `
-  <div class="${styles.Root}">
+  <div class="${styles.root}">
     {#error#}
   </div>
 `;

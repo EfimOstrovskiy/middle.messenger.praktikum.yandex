@@ -5,24 +5,27 @@ import template from './Error';
 import Button from '../../core/Button';
 
 interface IErrorProps {
-  codeError: string,
-  textError: string
+  codeError: string;
+  textError: string;
+  attr?: Record<string, string | number>;
   back?: Button
 }
 
 export class Error extends Component<IErrorProps> {
   constructor(props: IErrorProps) {
     const back = new Button({
-      className: styles.Back,
+      className: styles.back,
       value: 'Назад к чатам',
       theme: 'transparent',
-      events: {
-        click: () => {
-          console.log('test')
-        }
-      }
+      type: 'button'
     });
-    super({ back, ...props});
+    super('div', {
+      attr: {
+        class: styles.root
+      },
+      back,
+      ...props
+    });
   }
 
   private templateNode(args: null | Record<string, string | string[]>) {
@@ -30,9 +33,9 @@ export class Error extends Component<IErrorProps> {
   }
 
   render() {
-    const { codeError, textError } = this.props;
+    const { codeError, textError, back } = this.props;
 
-    return this.compile(this.templateNode, { codeError, textError, back: this.props.back });
+    return this.compile(this.templateNode, { codeError, textError, back });
   }
 }
 
