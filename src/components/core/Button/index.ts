@@ -1,4 +1,4 @@
-import * as styles from './Button.module.scss';
+import styles from './Button.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './Button';

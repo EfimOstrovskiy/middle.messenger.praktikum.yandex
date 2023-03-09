@@ -1,4 +1,4 @@
-import * as styles from './Message.module.scss';
+import styles from './Message.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import { connect } from '../../../utils/Store/Connect';

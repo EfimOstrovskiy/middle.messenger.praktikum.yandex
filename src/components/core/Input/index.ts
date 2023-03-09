@@ -1,4 +1,4 @@
-import * as styles from './Input.module.scss';
+import styles from './Input.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './Input';

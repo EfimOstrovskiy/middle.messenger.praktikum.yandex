@@ -1,4 +1,4 @@
-import * as styles from './FromAuth.module.scss';
+import styles from './FromAuth.module.scss';
 
 const template = `
   <h3 class="${styles.title}">{#title#}</h3>

@@ -1,4 +1,4 @@
-import * as styles from './SignIn.module.scss';
+import styles from './SignIn.module.scss';
 
 import { compileComponent, Component } from '../../utils';
 import { router } from '../../utils/Router';

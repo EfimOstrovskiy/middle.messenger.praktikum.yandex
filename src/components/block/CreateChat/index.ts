@@ -1,4 +1,4 @@
-import * as styles from './CreateChat.module.scss';
+import styles from './CreateChat.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import { createChat } from '../../../utils/Store/actions/createChat';

@@ -1,4 +1,4 @@
-import * as styles from './UserDataList.module.scss';
+import styles from './UserDataList.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './UserDataList';
