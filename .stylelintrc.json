@@ -6,7 +6,6 @@
   "ignoreFiles": [
     "dist/*",
     "public/*",
-    "node_modules/*",
-    ".parcel-cache/*"
+    "node_modules/*"
   ]
 }
