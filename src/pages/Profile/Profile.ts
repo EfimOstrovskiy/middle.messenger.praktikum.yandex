@@ -1,4 +1,4 @@
-import * as styles from './Profile.module.scss';
+import styles from './Profile.module.scss';
 
 import PROFILE_ICON from '../../../public/images/icons/profile.svg'
 

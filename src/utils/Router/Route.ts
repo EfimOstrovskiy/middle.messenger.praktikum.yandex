@@ -5,9 +5,9 @@ export class Route {
   blockClass: any;
   block: Component | null;
   props: Record<string, any>;
-  tag: string
+  tag?: string
 
-  constructor(pathname: string, view: string, props: Record<string, any>, tag: string) {
+  constructor(pathname: string, view: string, props: Record<string, any>, tag?: string) {
     this.pathname = pathname;
     this.blockClass = view;
     this.block = null;

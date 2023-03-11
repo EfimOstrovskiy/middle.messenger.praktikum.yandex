@@ -1,0 +1,14 @@
+.git
+.github
+.gitignore
+
+/dist
+/node_modules
+
+Dockerfile
+.dockerignore
+.editorconfig
+
+.DS_Store
+.idea
+README.md

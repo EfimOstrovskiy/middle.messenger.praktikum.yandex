@@ -21,7 +21,7 @@ class Router {
     Router.instance = this;
   }
 
-  use(pathname: string, block: any, tag: string) {
+  use(pathname: string, block: any, tag?: string) {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery}, tag);
     this.routes.push(route);
     return this;

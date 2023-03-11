@@ -1,4 +1,4 @@
-import * as styles from './FromAuth.module.scss';
+import styles from './FromAuth.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './FromAuth';

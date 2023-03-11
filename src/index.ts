@@ -11,16 +11,12 @@ const store = new Store();
 const auth = store.getState().auth;
 
 if (!auth || auth === 'unauthorized') {
-  router.go('/login')
+  router.go('/login');
 }
 
 router
   .use('/', Main, 'div')
-  .use('/login', Login, 'div')
-  .use('/sign_in', SignIn, 'div')
+  .use('/login', Login)
+  .use('/sign_in', SignIn)
   .use('/profile', Profile, 'div')
   .start();
-
-// import deleteChat from "./api/methods/deleteChat";
-//
-// deleteChat({ chatId: 5829 })

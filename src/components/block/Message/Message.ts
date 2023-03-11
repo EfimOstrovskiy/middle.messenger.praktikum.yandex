@@ -1,4 +1,4 @@
-import * as styles from './Message.module.scss';
+import styles from './Message.module.scss';
 import cn from 'classnames';
 
 const template = `

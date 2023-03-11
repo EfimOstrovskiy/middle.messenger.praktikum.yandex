@@ -1,4 +1,4 @@
-import * as styles from './SearchChat.module.scss';
+import styles from './SearchChat.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './SearchChat';

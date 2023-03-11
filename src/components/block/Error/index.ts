@@ -1,4 +1,4 @@
-import * as styles from './Error.module.scss';
+import styles from './Error.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import template from './Error';
