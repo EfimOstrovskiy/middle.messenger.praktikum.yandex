@@ -3,3 +3,4 @@
 
 npm run unit
 npm run eslint
+npm run stylelint

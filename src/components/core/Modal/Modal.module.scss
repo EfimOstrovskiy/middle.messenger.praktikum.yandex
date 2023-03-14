@@ -5,7 +5,7 @@
   bottom: 0;
   left: 0;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0 0 0 / 50%);
 
   .close {
     margin-left: auto;
@@ -22,7 +22,7 @@
   flex-direction: column;
   width: 300px;
   background: var(--color-white);
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 6px rgb(0 0 0 / 14%);
   border-radius: 12px;
   transform: translate(-50%, -50%);
 }
