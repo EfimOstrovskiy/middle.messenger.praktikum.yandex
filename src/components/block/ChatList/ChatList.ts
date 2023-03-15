@@ -1,4 +1,4 @@
-import * as styles from './ChatList.module.scss';
+import styles from './ChatList.module.scss';
 
 import PROFILE_ICON from '../../../../public/images/icons/profile.svg';
 

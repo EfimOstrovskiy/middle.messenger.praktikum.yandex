@@ -1,4 +1,4 @@
-import * as styles from './ToggleUser.module.scss';
+import styles from './ToggleUser.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import { addUser } from '../../../utils/Store/actions/addUser';

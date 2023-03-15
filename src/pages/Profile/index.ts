@@ -1,4 +1,4 @@
-import * as styles from './Profile.module.scss';
+import styles from './Profile.module.scss';
 
 import { compileComponent, Component } from '../../utils';
 import { router } from '../../utils/Router';

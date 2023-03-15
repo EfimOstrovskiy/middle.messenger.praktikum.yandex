@@ -1,4 +1,4 @@
-import * as styles from './ChatList.module.scss';
+import styles from './ChatList.module.scss';
 
 import { compileComponent, Component } from '../../../utils';
 import { activeChat } from '../../../utils/Store/actions/activeChat';
